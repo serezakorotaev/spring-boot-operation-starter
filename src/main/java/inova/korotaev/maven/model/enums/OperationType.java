@@ -1,5 +1,7 @@
-package inova.korotaev.maven.operation;
+package inova.korotaev.maven.model.enums;
 
+import inova.korotaev.maven.operation.Operation;
+import inova.korotaev.maven.operation.OperationProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
@@ -46,7 +48,7 @@ public enum OperationType {
      * Определяем дальнейшую операцию
      * @param operationProvider см интерфейс OperationProvider
      * @return какую операцию мы будем выполнять Operation<R>
-     * @param <R> обычно у нас Criteria
+     * @param <R> Specification
      */
     @SuppressWarnings("unchecked")
     public <R> Operation<R> getOperation(OperationProvider<R> operationProvider) {
