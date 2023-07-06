@@ -1,5 +1,7 @@
 package inova.korotaev.maven.operation;
 
+import inova.korotaev.maven.model.enums.GlueOperation;
+import inova.korotaev.maven.model.enums.OperationType;
 import inova.korotaev.maven.model.paging.PageRequestBuilder;
 import inova.korotaev.maven.model.paging.PageRequestWithOffset;
 import inova.korotaev.maven.model.SearchParam;
@@ -12,8 +14,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-import static inova.korotaev.maven.operation.OperationType.OperationProcess.PAGING;
-import static inova.korotaev.maven.operation.OperationType.OperationProcess.SEARCHING;
+import static inova.korotaev.maven.model.enums.OperationType.OperationProcess.PAGING;
+import static inova.korotaev.maven.model.enums.OperationType.OperationProcess.SEARCHING;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +27,9 @@ public class OperationService<T> {
         if (CollectionUtils.isEmpty(searchParams)) {
             return SpecificationUtils.findAll();
         }
-        return searchParams
-                .stream()
-                .filter(param -> OperationType.of(param.getOperation()).getProcess().equals(SEARCHING))
-                .map(param -> OperationType.of(param.getOperation()).getOperation(operationProvider).buildOperation(param))
-                .reduce(Specification::and)
-                .orElse(SpecificationUtils.findAll());
+
+        return buildSpecification(searchParams, GlueOperation.AND)
+                .and(buildSpecification(searchParams, GlueOperation.OR));
     }
 
     public PageRequestWithOffset buildPageSettings(List<SearchParam> searchParams, List<String> searchSortFields) {
@@ -51,5 +50,15 @@ public class OperationService<T> {
                     }
                 });
         return PageRequestWithOffset.of(pageRequestBuilder.getOffset(), pageRequestBuilder.getLimit(), pageRequestBuilder.getSortOrders());
+    }
+
+    private Specification<T> buildSpecification(List<SearchParam> searchParams, GlueOperation glueOperation) {
+        return searchParams
+                .stream()
+                .filter(param -> OperationType.of(param.getOperation()).getProcess().equals(SEARCHING))
+                .filter(param -> glueOperation.equals(param.getGlue()))
+                .map(param -> OperationType.of(param.getOperation()).getOperation(operationProvider).buildOperation(param))
+                .reduce(glueOperation::glueOperation)
+                .orElse(SpecificationUtils.findAll());
     }
 }
