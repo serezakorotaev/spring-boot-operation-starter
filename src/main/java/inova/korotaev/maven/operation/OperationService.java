@@ -1,10 +1,10 @@
 package inova.korotaev.maven.operation;
 
+import inova.korotaev.maven.model.SearchParam;
 import inova.korotaev.maven.model.enums.GlueOperation;
 import inova.korotaev.maven.model.enums.OperationType;
 import inova.korotaev.maven.model.paging.PageRequestBuilder;
 import inova.korotaev.maven.model.paging.PageRequestWithOffset;
-import inova.korotaev.maven.model.SearchParam;
 import inova.korotaev.maven.util.SortUtils;
 import inova.korotaev.maven.util.SpecificationUtils;
 import lombok.RequiredArgsConstructor;
