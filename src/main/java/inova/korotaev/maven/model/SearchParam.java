@@ -8,5 +8,5 @@ public class SearchParam {
     private String name;
     private Object value;
     private String operation;
-    private GlueOperation glue = GlueOperation.OR;
+    private GlueOperation glue = GlueOperation.AND;
 }
