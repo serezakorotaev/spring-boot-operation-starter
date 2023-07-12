@@ -16,19 +16,15 @@ import static java.util.stream.Collectors.toUnmodifiableMap;
 @Getter
 @AllArgsConstructor
 public enum OperationType {
-    IN("in", OperationProvider::in, OperationProcess.SEARCHING),
-    NOT_IN("notIn", OperationProvider::notIn, OperationProcess.SEARCHING),
-    LIKE("like", OperationProvider::like, OperationProcess.SEARCHING),
-    EQUAL("eq", OperationProvider::eq, OperationProcess.SEARCHING),
-    NOT_EQUAL("notEq", OperationProvider::notEq, OperationProcess.SEARCHING),
-    IS_NULL("isNull", OperationProvider::isNull, OperationProcess.SEARCHING),
-    LIMIT("limit", null, OperationProcess.PAGING),
-    OFFSET("offset", null, OperationProcess.PAGING),
-    SORT_BY("sortBy", null, OperationProcess.PAGING);
+    IN("in", OperationProvider::in),
+    NOT_IN("notIn", OperationProvider::notIn),
+    LIKE("like", OperationProvider::like),
+    EQUAL("eq", OperationProvider::eq),
+    NOT_EQUAL("notEq", OperationProvider::notEq),
+    IS_NULL("isNull", OperationProvider::isNull);
 
     private final String operationName;
     private final Function<OperationProvider<?>, Operation<?>> linkToOperation;
-    private final OperationProcess process;
 
 
     private static final Map<String, OperationType> operationMap = Stream.of(values())
@@ -53,9 +49,5 @@ public enum OperationType {
     @SuppressWarnings("unchecked")
     public <R> Operation<R> getOperation(OperationProvider<R> operationProvider) {
         return (Operation<R>) linkToOperation.apply(operationProvider);
-    }
-
-    public enum OperationProcess {
-        SEARCHING, PAGING
     }
 }
