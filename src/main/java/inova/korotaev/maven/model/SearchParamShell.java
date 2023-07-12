@@ -6,5 +6,6 @@ import java.util.List;
 
 @Data
 public class SearchParamShell {
-    List<SearchParam> searchParams;
+    private List<SearchParam> searchParams;
+    private PageAttribute pageAttribute;
 }
