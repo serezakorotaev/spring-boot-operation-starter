@@ -45,9 +45,12 @@ public final class SortUtils {
     }
 
     private static String checkName(final List<String> validNames, String name) {
-        if (!validNames.contains(name.substring(1))) {
+        if (!validNames.contains(getName(name))) {
             throw new IllegalArgumentException(String.format("Not found parameter with name: %s", name));
         }
         return name;
+    }
+    private static String getName(String name) {
+        return name.startsWith("-") ? name.substring(1) : name;
     }
 }
