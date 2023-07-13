@@ -38,19 +38,14 @@ public final class SortUtils {
 
     private static Sort.Order getOrder(String name) {
         if (name.contains("-")) {
-            return Sort.Order.desc(name);
+            return Sort.Order.desc(name.substring(1));
         } else {
             return Sort.Order.asc(name);
         }
     }
 
     private static String checkName(final List<String> validNames, String name) {
-
-        if (name.startsWith("-")) {
-            name = name.substring(1);
-        }
-
-        if (!validNames.contains(name)) {
+        if (!validNames.contains(name.substring(1))) {
             throw new IllegalArgumentException(String.format("Not found parameter with name: %s", name));
         }
         return name;
