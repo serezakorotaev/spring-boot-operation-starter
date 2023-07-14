@@ -1,7 +1,8 @@
 package inova.korotaev.maven.operation;
 
+import inova.korotaev.maven.model.ComplexSearchParam;
 import inova.korotaev.maven.model.PageAttribute;
-import inova.korotaev.maven.model.SearchParam;
+import inova.korotaev.maven.model.BaseSearchParam;
 import inova.korotaev.maven.model.enums.GlueOperation;
 import inova.korotaev.maven.model.enums.OperationType;
 import inova.korotaev.maven.model.paging.PageRequestWithOffset;
@@ -22,13 +23,16 @@ public class OperationService<T> {
 
     private final OperationProvider<Specification<T>> operationProvider;
 
-    public Specification<T> buildRequestByFilters(List<SearchParam> searchParams) {
-        if (CollectionUtils.isEmpty(searchParams)) {
+    public Specification<T> buildBaseSpecificationByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue) {
+        if (CollectionUtils.isEmpty(baseSearchParams)) {
             return SpecificationUtils.findAll();
         }
 
-        return buildSpecification(searchParams, GlueOperation.AND)
-                .and(buildSpecification(searchParams, GlueOperation.OR));
+        return baseSearchParams
+                .stream()
+                .map(param -> OperationType.of(param.getOperation()).getOperation(operationProvider).buildOperation(param))
+                .reduce(glue::glueOperation)
+                .orElse(SpecificationUtils.findAll());
     }
 
     public PageRequestWithOffset buildPageSettings(PageAttribute pageAttribute, List<String> searchSortFields) {
@@ -40,12 +44,15 @@ public class OperationService<T> {
                 SortUtils.makeSortOrders(searchSortFields, pageAttribute.getSortBy()));
     }
 
-    private Specification<T> buildSpecification(List<SearchParam> searchParams, GlueOperation glueOperation) {
-        return searchParams
-                .stream()
-                .filter(param -> glueOperation.equals(param.getGlue()))
-                .map(param -> OperationType.of(param.getOperation()).getOperation(operationProvider).buildOperation(param))
-                .reduce(glueOperation::glueOperation)
+    public Specification<T> buildComplexSpecificationByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {
+        return complexSearchParams.stream()
+                .map(complexSearchParam ->
+                        buildBaseSpecificationByParams(
+                                complexSearchParam.getBaseSearchParams(),
+                                complexSearchParam.getInternalGlue()
+                        )
+                )
+                .reduce(externalGlue::glueOperation)
                 .orElse(SpecificationUtils.findAll());
     }
 }

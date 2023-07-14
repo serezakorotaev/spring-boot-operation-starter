@@ -8,8 +8,8 @@ import java.util.List;
 import static inova.korotaev.maven.model.enums.GlueOperation.AND;
 
 @Data
-public class SearchParamShell {
-    private List<BaseSearchParam> baseSearchParams;
-    private GlueOperation glue = AND;
-    private PageAttribute pageAttribute;
+public class MultipleOperationSearchParamShell {
+    List<ComplexSearchParam> search;
+    GlueOperation externalGlue = AND;
+    PageAttribute pageAttribute;
 }
