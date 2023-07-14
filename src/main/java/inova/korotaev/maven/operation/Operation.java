@@ -1,7 +1,7 @@
 package inova.korotaev.maven.operation;
 
-import inova.korotaev.maven.model.SearchParam;
+import inova.korotaev.maven.model.BaseSearchParam;
 
 public interface Operation<R> {
-    R buildOperation(SearchParam searchParam);
+    R buildOperation(BaseSearchParam baseSearchParam);
 }
