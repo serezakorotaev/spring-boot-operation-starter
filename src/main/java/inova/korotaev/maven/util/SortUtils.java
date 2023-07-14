@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Sort;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ public final class SortUtils {
      *                   "-value" - сортировка по DESC;
      *                   "value" - сортировка по ASC
      */
-    public static List<Sort.Order> makeSortOrders(final List<String> validNames, final String sortValues) {
+    public static List<Sort.Order> makeSortOrders(final Collection<String> validNames, final String sortValues) {
         if (sortValues == null || sortValues.isBlank()) {
             return Collections.emptyList();
         }
@@ -44,7 +45,7 @@ public final class SortUtils {
         }
     }
 
-    private static String checkName(final List<String> validNames, String name) {
+    private static String checkName(final Collection<String> validNames, String name) {
         if (!validNames.contains(getName(name))) {
             throw new IllegalArgumentException(String.format("Not found parameter with name: %s", name));
         }
