@@ -21,7 +21,11 @@ public enum OperationType {
     LIKE("like", OperationProvider::like),
     EQUAL("eq", OperationProvider::eq),
     NOT_EQUAL("notEq", OperationProvider::notEq),
-    IS_NULL("isNull", OperationProvider::isNull);
+    IS_NULL("isNull", OperationProvider::isNull),
+    LESS_THAN("ls", OperationProvider::lessThan),
+    GREATER_THAN("gt", OperationProvider::greaterThan),
+    LESS_THAN_OR_EQUALS("lse", OperationProvider::lessThanOrEquals),
+    GREATER_THAN_OR_EQUALS("gte", OperationProvider::greaterThanOrEquals);
 
     private final String operationName;
     private final Function<OperationProvider<?>, Operation<?>> linkToOperation;

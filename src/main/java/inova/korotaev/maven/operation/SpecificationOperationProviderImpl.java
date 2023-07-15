@@ -27,7 +27,6 @@ public class SpecificationOperationProviderImpl<T> implements OperationProvider<
         return param -> where(SpecificationUtils.findByColumnNotEquals(param.getValue(), param.getName()));
     }
 
-
     @Override
     public Operation<Specification<T>> in() {
         return param ->
@@ -45,5 +44,24 @@ public class SpecificationOperationProviderImpl<T> implements OperationProvider<
         return param -> where(SpecificationUtils.findByColumnIsNull(param.getName()));
     }
 
-    
+    @Override
+    public Operation<Specification<T>> lessThan() {
+        return param -> where(SpecificationUtils.lessThan(param.getValue().toString(), param.getName()));
+    }
+
+    @Override
+    public Operation<Specification<T>> greaterThan() {
+        return param -> where(SpecificationUtils.greaterThan(param.getValue().toString(), param.getName()));
+    }
+
+    @Override
+    public Operation<Specification<T>> greaterThanOrEquals() {
+        return param -> where(SpecificationUtils.greaterThanOrEqual(param.getValue().toString(), param.getName()));
+    }
+
+    @Override
+    public Operation<Specification<T>> lessThanOrEquals() {
+        return param -> where(SpecificationUtils.lessThanOrEqual(param.getValue().toString(), param.getName()));
+    }
+
 }
