@@ -39,9 +39,11 @@ public class OperationService<T> {
         if (Objects.isNull(pageAttribute)) {
             return PageRequestWithOffset.of(SortUtils.DEFAULT_OFFSET, SortUtils.DEFAULT_LIMIT, List.of());
         }
-        return PageRequestWithOffset.of(pageAttribute.getOffset(),
+        return PageRequestWithOffset.of(
+                pageAttribute.getOffset(),
                 pageAttribute.getLimit(),
-                SortUtils.makeSortOrders(searchSortFields, pageAttribute.getSortBy()));
+                SortUtils.makeSortOrders(searchSortFields, pageAttribute.getSortBy())
+        );
     }
 
     public Specification<T> buildComplexSpecificationByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {

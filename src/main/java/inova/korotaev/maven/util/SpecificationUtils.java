@@ -37,20 +37,35 @@ public final class SpecificationUtils {
     }
 
     @NonNull
-    public static <T, Y extends Comparable<Y>> Specification<T> findByColumnBetween(Y valueFrom, Y valueTo, @NonNull String columnName) {
-        if ((valueFrom == null) && (valueTo == null)) {
+    public static <T, Y extends Comparable<Y>> Specification<T> lessThan(Y value, @NonNull String columnName) {
+        if (value == null) {
             return Specification.where(null);
         }
-        if (valueTo == null) {
-            return (root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.greaterThanOrEqualTo(root.get(columnName), valueFrom);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get(columnName), value);
+    }
+
+    @NonNull
+    public static <T, Y extends Comparable<Y>> Specification<T> greaterThan(Y value, @NonNull String columnName) {
+        if (value == null) {
+            return Specification.where(null);
         }
-        if (valueFrom == null) {
-            return (root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.lessThan(root.get(columnName), valueTo);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get(columnName), value);
+    }
+
+    @NonNull
+    public static <T, Y extends Comparable<Y>> Specification<T> lessThanOrEqual(Y value, @NonNull String columnName) {
+        if (value == null) {
+            return Specification.where(null);
         }
-        return (root, criteriaQuery, criteriaBuilder) ->
-                criteriaBuilder.between(root.get(columnName), valueFrom, valueTo);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get(columnName), value);
+    }
+
+    @NonNull
+    public static <T, Y extends Comparable<Y>> Specification<T> greaterThanOrEqual(Y value, @NonNull String columnName) {
+        if (value == null) {
+            return Specification.where(null);
+        }
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get(columnName), value);
     }
 
     @NonNull
