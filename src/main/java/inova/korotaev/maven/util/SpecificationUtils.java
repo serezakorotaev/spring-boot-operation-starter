@@ -117,7 +117,7 @@ public final class SpecificationUtils {
 
     @NonNull
     public static <T> Specification<T> contains(@NonNull Object value, @NonNull String columnName) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.and(
+        return (root, query, criteriaBuilder) -> query.where(criteriaBuilder.and(
                 Arrays.stream(value.toString().split(","))
                         .map(v ->
                                 createPredicate.apply(
@@ -126,7 +126,7 @@ public final class SpecificationUtils {
                                         criteriaBuilder)
                         )
                         .toArray(Predicate[]::new)
-        );
+        )).getRestriction();
 
     }
 
