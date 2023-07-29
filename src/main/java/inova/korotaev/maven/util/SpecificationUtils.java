@@ -2,12 +2,17 @@ package inova.korotaev.maven.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.function.TriFunction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
 import org.springframework.util.CollectionUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.function.Function;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SpecificationUtils {
@@ -109,4 +114,23 @@ public final class SpecificationUtils {
         return (root, query, criteriaBuilder) ->
                 query.where(criteriaBuilder.conjunction()).getRestriction();
     }
+
+    @NonNull
+    public static <T> Specification<T> contains(@NonNull Object value, @NonNull String columnName) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.and(
+                Arrays.stream(value.toString().split(","))
+                        .map(v ->
+                                createPredicate.apply(
+                                        trimAndGlue.apply(v),
+                                        root.get(columnName),
+                                        criteriaBuilder)
+                        )
+                        .toArray(Predicate[]::new)
+        );
+
+    }
+
+    private static final Function<String, String> trimAndGlue = v -> "%" + v.trim() + "%";
+    private static final TriFunction<String, Expression<?>, CriteriaBuilder, Predicate> createPredicate =
+            (v, expression, cb) -> cb.like(expression.as(String.class), v);
 }

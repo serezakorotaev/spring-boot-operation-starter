@@ -25,7 +25,8 @@ public enum OperationType {
     LESS_THAN("lt", OperationProvider::lessThan),
     GREATER_THAN("gt", OperationProvider::greaterThan),
     LESS_THAN_OR_EQUALS("le", OperationProvider::lessThanOrEquals),
-    GREATER_THAN_OR_EQUALS("ge", OperationProvider::greaterThanOrEquals);
+    GREATER_THAN_OR_EQUALS("ge", OperationProvider::greaterThanOrEquals),
+    CONTAINS("contains", OperationProvider::contains);
 
     private final String operationName;
     private final Function<OperationProvider<?>, Operation<?>> linkToOperation;
