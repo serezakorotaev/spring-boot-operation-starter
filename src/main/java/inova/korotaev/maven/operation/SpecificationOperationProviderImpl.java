@@ -4,9 +4,10 @@ import inova.korotaev.maven.util.SpecificationUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.Collections;
 
+import static inova.korotaev.maven.model.enums.ValueType.cast;
+import static inova.korotaev.maven.model.enums.ValueType.collectionCast;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 @Component
@@ -19,24 +20,24 @@ public class SpecificationOperationProviderImpl<T> implements OperationProvider<
 
     @Override
     public Operation<Specification<T>> eq() {
-        return param -> where(SpecificationUtils.findByColumnEquals(param.getValue(), param.getName()));
+        return param -> where(SpecificationUtils.findByColumnEquals(cast(param.getValue()), param.getName()));
     }
 
     @Override
     public Operation<Specification<T>> notEq() {
-        return param -> where(SpecificationUtils.findByColumnNotEquals(param.getValue(), param.getName()));
+        return param -> where(SpecificationUtils.findByColumnNotEquals(cast(param.getValue()), param.getName()));
     }
 
     @Override
     public Operation<Specification<T>> in() {
         return param ->
-                where(SpecificationUtils.findByCollectionIn(Arrays.asList(param.getValue().toString().split(",")), param.getName()));
+                where(SpecificationUtils.findByCollectionIn(collectionCast(param.getValue()), param.getName()));
     }
 
     @Override
     public Operation<Specification<T>> notIn() {
         return param ->
-                where(SpecificationUtils.findByCollectionNotIn(Arrays.asList(param.getValue().toString().split(",")), param.getName()));
+                where(SpecificationUtils.findByCollectionNotIn(collectionCast(param.getValue()), param.getName()));
     }
 
     @Override
