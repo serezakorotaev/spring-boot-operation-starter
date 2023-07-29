@@ -22,10 +22,11 @@ public enum OperationType {
     EQUAL("eq", OperationProvider::eq),
     NOT_EQUAL("notEq", OperationProvider::notEq),
     IS_NULL("isNull", OperationProvider::isNull),
-    LESS_THAN("ls", OperationProvider::lessThan),
+    LESS_THAN("lt", OperationProvider::lessThan),
     GREATER_THAN("gt", OperationProvider::greaterThan),
-    LESS_THAN_OR_EQUALS("lse", OperationProvider::lessThanOrEquals),
-    GREATER_THAN_OR_EQUALS("gte", OperationProvider::greaterThanOrEquals);
+    LESS_THAN_OR_EQUALS("le", OperationProvider::lessThanOrEquals),
+    GREATER_THAN_OR_EQUALS("ge", OperationProvider::greaterThanOrEquals),
+    CONTAINS("contains", OperationProvider::contains);
 
     private final String operationName;
     private final Function<OperationProvider<?>, Operation<?>> linkToOperation;

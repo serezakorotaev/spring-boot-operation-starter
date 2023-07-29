@@ -64,4 +64,7 @@ public class SpecificationOperationProviderImpl<T> implements OperationProvider<
         return param -> where(SpecificationUtils.lessThanOrEqual(param.getValue().toString(), param.getName()));
     }
 
+    public Operation<Specification<T>> contains() {
+        return param -> where(SpecificationUtils.contains(param.getValue(), param.getName()));
+    }
 }
