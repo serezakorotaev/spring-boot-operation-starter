@@ -11,4 +11,5 @@ public interface OperationProvider<R> {
     Operation<R> greaterThan();
     Operation<R> greaterThanOrEquals();
     Operation<R> lessThanOrEquals();
+    Operation<R> contains();
 }
