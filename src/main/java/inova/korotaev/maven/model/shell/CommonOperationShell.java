@@ -9,6 +9,10 @@ import java.util.List;
 
 import static inova.korotaev.maven.model.enums.GlueOperation.AND;
 
+/**
+ * @author Sergey Korotaev
+ * Shell for base search requests
+ */
 @Value
 public class CommonOperationShell {
     List<BaseSearchParam> baseSearchParams;

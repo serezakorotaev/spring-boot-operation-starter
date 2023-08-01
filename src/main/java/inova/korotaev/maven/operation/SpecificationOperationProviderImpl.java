@@ -10,6 +10,12 @@ import static inova.korotaev.maven.model.enums.ValueType.cast;
 import static inova.korotaev.maven.model.enums.ValueType.collectionCast;
 import static org.springframework.data.jpa.domain.Specification.where;
 
+/**
+ * @author Sergey Korotaev
+ * Service is realization Operation provider interface for building different specifications
+ * @param <T> - the entity for which the request is being built
+ * @see OperationProvider
+ */
 @Component
 public class SpecificationOperationProviderImpl<T> implements OperationProvider<Specification<T>> {
 

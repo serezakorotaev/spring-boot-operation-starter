@@ -13,6 +13,10 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
+/**
+ * @author Sergey Korotaev
+ * Enum which name of the operation and link for operation method by name
+ */
 @Getter
 @AllArgsConstructor
 public enum OperationType {
@@ -37,6 +41,12 @@ public enum OperationType {
                     OperationType::getOperationName,
                     type -> type));
 
+    /**
+     * Get OperationType by operation name
+     *
+     * @param typeName - operation name
+     * @return OperationType
+     */
     public static OperationType of(String typeName) {
         if (!StringUtils.hasText(typeName)) {
             return OperationType.EQUAL;
@@ -46,10 +56,12 @@ public enum OperationType {
     }
 
     /**
-     * Определяем дальнейшую операцию
-     * @param operationProvider см интерфейс OperationProvider
-     * @return какую операцию мы будем выполнять Operation<R>
-     * @param <R> Specification
+     * Determine the next operation
+     *
+     * @param operationProvider OperationProvider
+     * @param <R>               interfaces for data access (for example, Specification)
+     * @return which one operation will do from Operation<R>
+     * @see OperationProvider
      */
     @SuppressWarnings("unchecked")
     public <R> Operation<R> getOperation(OperationProvider<R> operationProvider) {

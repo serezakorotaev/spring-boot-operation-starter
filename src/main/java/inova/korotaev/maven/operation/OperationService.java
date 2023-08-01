@@ -16,6 +16,12 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @param <T>
+ * @author Sergey Korotaev
+ * Service for building specification for base and complex requests.
+ * Also for building page request settings
+ */
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
@@ -23,6 +29,15 @@ public class OperationService<T> {
 
     private final OperationProvider<Specification<T>> operationProvider;
 
+    /**
+     * Create specification for base search request
+     *
+     * @param baseSearchParams - model for base search request
+     * @param glue             - condition for gluing specifications
+     * @return - specification for data request
+     * @see BaseSearchParam
+     * @see GlueOperation
+     */
     public Specification<T> buildBaseSpecificationByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue) {
         if (CollectionUtils.isEmpty(baseSearchParams)) {
             return SpecificationUtils.findAll();
@@ -35,6 +50,15 @@ public class OperationService<T> {
                 .orElse(SpecificationUtils.findAll());
     }
 
+    /**
+     * Create PageRequest extension for paging and sorting settings
+     *
+     * @param pageAttribute    - attribute class for pagination and sorting
+     * @param searchSortFields - fields by which sorting is possible in the database
+     * @return - PageRequestWithOffset
+     * @see PageRequestWithOffset
+     * @see PageAttribute
+     */
     public PageRequestWithOffset buildPageSettings(PageAttribute pageAttribute, List<String> searchSortFields) {
         if (Objects.isNull(pageAttribute)) {
             return PageRequestWithOffset.of(SortUtils.DEFAULT_OFFSET, SortUtils.DEFAULT_LIMIT, List.of());
@@ -46,6 +70,15 @@ public class OperationService<T> {
         );
     }
 
+    /**
+     * Create specification for complex search request
+     *
+     * @param complexSearchParams - model for complex search request
+     * @param externalGlue        - condition for gluing complex specification between each other
+     * @return - specification for data request
+     * @see ComplexSearchParam
+     * @see GlueOperation
+     */
     public Specification<T> buildComplexSpecificationByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {
         return complexSearchParams.stream()
                 .map(complexSearchParam ->
