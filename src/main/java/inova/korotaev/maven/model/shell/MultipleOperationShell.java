@@ -9,6 +9,10 @@ import java.util.List;
 
 import static inova.korotaev.maven.model.enums.GlueOperation.AND;
 
+/**
+ * @author Sergey Korotaev
+ * Shell for complex search requests
+ */
 @Value
 public class MultipleOperationShell {
     List<ComplexSearchParam> search;

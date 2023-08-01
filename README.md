@@ -392,8 +392,6 @@ PageRequest extension for building page settings
 
   ```
   Example:
-  PageRequest request = PageRequestWithOffset.of(offset: 0, size: 10, sort: Sort.unsorted())
-  or
   PageRequest request = PageRequestWithOffset.of(offset: 0, size: 10, List<Sort.Order>: List.of(Order.by(name).asc()))
   
   ```

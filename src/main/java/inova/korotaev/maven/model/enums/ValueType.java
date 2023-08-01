@@ -11,8 +11,9 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * Enum, который содержит типы, предназначенные для каста.
- * Когда объект приходит в запросе, определяется его тип и производится каст коллекции в его тип для поиска
+ * @author Sergey Korotaev
+ * Enum which has types for casts
+ * When an object comes in a request, its type is determined and the collection or the object itself is cast into its type for searching
  */
 @Getter
 @AllArgsConstructor
@@ -125,18 +126,37 @@ public enum ValueType {
     private final Class<?> clazz;
 
     /**
-     * Метод, который производит проверку типа приходящего объекта, для дальнейшей фильтрации по условию
+     * Method that checks the type of the incoming object for further filtering by condition
      *
-     * @param u   - объект, у которого определяется тип для дальнейшей вставки
-     * @param <U> - generic приходящего объекта
-     * @return - true/false в зависимости от выполнения условия
+     * @param u   - an object whose type is determined for further insertion
+     * @param <U> - generic by incoming object
+     * @return - true/false depending on the condition
      */
     public abstract <U> Boolean checkValueType(U u);
 
+    /**
+     * Method that casts the entire collection to the desired type
+     *
+     * @param obj - an object, which is then parsed into a collection of the desired type
+     * @return - collection of the desired type
+     */
     public abstract Collection<?> castCollection(Object obj);
 
+    /**
+     * Method that casts an object to the desired type
+     *
+     * @param obj - object, which is then cast to the desired type
+     * @return - Object of the desired type
+     */
     public abstract Object simpleCast(Object obj);
 
+    /**
+     * Static method that is called on an object to determine its type
+     * and cast to the appropriate type
+     *
+     * @param value - incoming object
+     * @return - Object of the desired type
+     */
     public static Object cast(Object value) {
         return Arrays.stream(ValueType.values())
                 .filter(valueType -> valueType.checkValueType(value))
@@ -145,6 +165,13 @@ public enum ValueType {
                 .orElseThrow();
     }
 
+    /**
+     * A static method that is called on a collection to
+     * determining the types of elements in the collection and casting the collection to the appropriate type
+     *
+     * @param value - incoming collection as an object
+     * @return - collection of the desired type
+     */
     public static Collection<?> collectionCast(Object value) {
         String firstElement = value.toString().split(",")[0];
         return Arrays.stream(ValueType.values())
@@ -155,10 +182,10 @@ public enum ValueType {
     }
 
     /**
-     * Проверка строки на возможность десериализации в инстант
+     * Checking a string for the possibility of deserialization to an instance
      *
-     * @param value - приходящая строка для проверки
-     * @return - true/false в зависимости от выполнения условия
+     * @param value - incoming string to check
+     * @return - true/false dependence on condition
      */
     private static boolean checkInstant(Object value) {
         try {

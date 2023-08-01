@@ -7,7 +7,8 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 /**
- * Реализация PageRequest с offset и без использования page.
+ * @author Sergey Korotaev
+ * Implementing PageRequest with offset and without using page
  */
 public class PageRequestWithOffset extends PageRequest {
 
@@ -18,6 +19,14 @@ public class PageRequestWithOffset extends PageRequest {
         this.offset = offset;
     }
 
+    /**
+     * Static method for building PageRequest extension
+     *
+     * @param offset     - Shift relative to the beginning of the list
+     * @param limit      - Number of list items to return
+     * @param sortOrders - list with settings for sort
+     * @return - PageRequestWithOffset
+     */
     public static PageRequestWithOffset of(Integer offset, Integer limit,
                                            final List<Sort.Order> sortOrders) {
         if (offset == null) {
@@ -30,6 +39,18 @@ public class PageRequestWithOffset extends PageRequest {
                 ? Sort.unsorted()
                 : Sort.by(sortOrders);
 
+        return new PageRequestWithOffset(offset, limit, sort);
+    }
+
+    /**
+     * Static method for building PageRequest extension
+     *
+     * @param offset - Shift relative to the beginning of the list
+     * @param limit  - Number of list items to return
+     * @param sort   - settings for sort
+     * @return - PageRequestWithOffset
+     */
+    public static PageRequestWithOffset of(final int offset, final int limit, final Sort sort) {
         return new PageRequestWithOffset(offset, limit, sort);
     }
 

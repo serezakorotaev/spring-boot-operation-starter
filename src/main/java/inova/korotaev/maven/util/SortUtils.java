@@ -9,6 +9,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Sergey Korotaev
+ * @see RegexpUtils
+ * Util is used for transforming string by pattern inside (uses RegexpUtils) to list org.springframework.data.domain.Sort.Order class
+ * and checking by validNames if it can build Sort.Order by these sortValue names
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SortUtils {
 
@@ -17,12 +23,13 @@ public final class SortUtils {
     public static final int DEFAULT_LIMIT = 200;
 
     /**
-     * Метод для получения порядка сортировки.
+     * Method for getting sort order
      *
-     * @param validNames список имен параметров, которые подходят под сортировку
-     * @param sortValues строка с параметрами для сортировки, вида: "id,-name"
-     *                   "-value" - сортировка по DESC;
-     *                   "value" - сортировка по ASC
+     * @param validNames list of parameter names that match sorting
+     * @param sortValues string with parameters for sorting, type: "id,-name"
+     *                   "-value" - sort by DESC;
+     *                   "value" - sort by ASC
+     * @return Sort.Order - list with sorting parameters
      */
     public static List<Sort.Order> makeSortOrders(final Collection<String> validNames, final String sortValues) {
         if (sortValues == null || sortValues.isBlank()) {
@@ -51,6 +58,7 @@ public final class SortUtils {
         }
         return name;
     }
+
     private static String getName(String name) {
         return name.startsWith("-") ? name.substring(1) : name;
     }

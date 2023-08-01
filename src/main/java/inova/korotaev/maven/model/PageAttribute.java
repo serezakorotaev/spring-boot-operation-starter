@@ -2,6 +2,10 @@ package inova.korotaev.maven.model;
 
 import lombok.Data;
 
+/**
+ * @author Sergey Korotaev
+ * Class for paging and sorting settings
+ */
 @Data
 public class PageAttribute {
     private Integer limit;
