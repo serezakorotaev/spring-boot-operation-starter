@@ -1,4 +1,4 @@
-package inova.korotaev.maven.operation;
+package ru.korotaev.dynamic.operation;
 
 /**
  * @param <R> - interface for data access (for example, Specification)

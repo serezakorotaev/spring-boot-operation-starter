@@ -1,6 +1,6 @@
-package inova.korotaev.maven.model.paging;
+package ru.korotaev.dynamic.model.paging;
 
-import inova.korotaev.maven.util.SortUtils;
+import ru.korotaev.dynamic.util.SortUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 

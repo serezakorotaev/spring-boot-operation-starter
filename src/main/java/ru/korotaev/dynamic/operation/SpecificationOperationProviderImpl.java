@@ -1,13 +1,13 @@
-package inova.korotaev.maven.operation;
+package ru.korotaev.dynamic.operation;
 
-import inova.korotaev.maven.util.SpecificationUtils;
+import ru.korotaev.dynamic.util.SpecificationUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
-import static inova.korotaev.maven.model.enums.ValueType.cast;
-import static inova.korotaev.maven.model.enums.ValueType.collectionCast;
+import static ru.korotaev.dynamic.model.enums.ValueType.cast;
+import static ru.korotaev.dynamic.model.enums.ValueType.collectionCast;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**

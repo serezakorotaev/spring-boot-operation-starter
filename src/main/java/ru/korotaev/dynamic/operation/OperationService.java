@@ -1,13 +1,13 @@
-package inova.korotaev.maven.operation;
+package ru.korotaev.dynamic.operation;
 
-import inova.korotaev.maven.model.ComplexSearchParam;
-import inova.korotaev.maven.model.PageAttribute;
-import inova.korotaev.maven.model.BaseSearchParam;
-import inova.korotaev.maven.model.enums.GlueOperation;
-import inova.korotaev.maven.model.enums.OperationType;
-import inova.korotaev.maven.model.paging.PageRequestWithOffset;
-import inova.korotaev.maven.util.SortUtils;
-import inova.korotaev.maven.util.SpecificationUtils;
+import ru.korotaev.dynamic.model.ComplexSearchParam;
+import ru.korotaev.dynamic.model.PageAttribute;
+import ru.korotaev.dynamic.model.BaseSearchParam;
+import ru.korotaev.dynamic.model.enums.GlueOperation;
+import ru.korotaev.dynamic.model.enums.OperationType;
+import ru.korotaev.dynamic.model.paging.PageRequestWithOffset;
+import ru.korotaev.dynamic.util.SortUtils;
+import ru.korotaev.dynamic.util.SpecificationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,11 @@
-package inova.korotaev.maven.model;
+package ru.korotaev.dynamic.model;
 
-import inova.korotaev.maven.model.enums.GlueOperation;
+import ru.korotaev.dynamic.model.enums.GlueOperation;
 import lombok.Data;
 
 import java.util.List;
 
-import static inova.korotaev.maven.model.enums.GlueOperation.AND;
+import static ru.korotaev.dynamic.model.enums.GlueOperation.AND;
 
 /**
  * @author Sergey Korotaev

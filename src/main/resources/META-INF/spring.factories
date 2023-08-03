@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  inova.korotaev.maven.OperationProcessorAutoConfiguration
+  ru.korotaev.dynamic.OperationProcessorAutoConfiguration

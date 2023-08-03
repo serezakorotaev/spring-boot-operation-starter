@@ -1,4 +1,4 @@
-package inova.korotaev.maven.util;
+package ru.korotaev.dynamic.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

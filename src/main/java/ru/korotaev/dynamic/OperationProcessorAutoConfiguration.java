@@ -1,4 +1,4 @@
-package inova.korotaev.maven;
+package ru.korotaev.dynamic;
 
 import org.springframework.context.annotation.ComponentScan;
 
