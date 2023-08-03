@@ -14,6 +14,15 @@
     <groupId>ru.korotaev.dynamic</groupId>
     <artifactId>spring-boot-operation-starter</artifactId>
     <version>1.0.0</version>
+    <description>Library for dynamic searching into the databases</description>
+
+    <developers>
+        <developer>
+            <name>Sergey Korotaev</name>
+            <email>sergey.evgen.kor2501@gmail.com</email>
+            <url>https://github.com/serezakorotaev</url>
+        </developer>
+    </developers>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
