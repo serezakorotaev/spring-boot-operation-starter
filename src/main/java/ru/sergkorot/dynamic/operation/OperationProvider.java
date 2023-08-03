@@ -1,4 +1,4 @@
-package ru.korotaev.dynamic.operation;
+package ru.sergkorot.dynamic.operation;
 
 /**
  * @param <R> - interface for data access (for example, Specification)

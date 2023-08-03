@@ -1,4 +1,4 @@
-package ru.korotaev.dynamic;
+package ru.sergkorot.dynamic;
 
 import org.springframework.context.annotation.ComponentScan;
 

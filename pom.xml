@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>ru.korotaev.dynamic</groupId>
+    <groupId>ru.sergkorot.dynamic</groupId>
     <artifactId>spring-boot-operation-starter</artifactId>
     <version>1.0.0</version>
     <description>Library for dynamic searching into the databases</description>

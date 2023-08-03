@@ -1,7 +1,7 @@
-package ru.korotaev.dynamic.model.enums;
+package ru.sergkorot.dynamic.model.enums;
 
-import ru.korotaev.dynamic.operation.Operation;
-import ru.korotaev.dynamic.operation.OperationProvider;
+import ru.sergkorot.dynamic.operation.Operation;
+import ru.sergkorot.dynamic.operation.OperationProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.util.StringUtils;

@@ -1,13 +1,13 @@
-package ru.korotaev.dynamic.model.shell;
+package ru.sergkorot.dynamic.model.shell;
 
-import ru.korotaev.dynamic.model.ComplexSearchParam;
-import ru.korotaev.dynamic.model.PageAttribute;
-import ru.korotaev.dynamic.model.enums.GlueOperation;
+import ru.sergkorot.dynamic.model.ComplexSearchParam;
+import ru.sergkorot.dynamic.model.PageAttribute;
+import ru.sergkorot.dynamic.model.enums.GlueOperation;
 import lombok.Value;
 
 import java.util.List;
 
-import static ru.korotaev.dynamic.model.enums.GlueOperation.AND;
+import static ru.sergkorot.dynamic.model.enums.GlueOperation.AND;
 
 /**
  * @author Sergey Korotaev

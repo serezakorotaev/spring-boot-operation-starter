@@ -1,13 +1,13 @@
-package ru.korotaev.dynamic.operation;
+package ru.sergkorot.dynamic.operation;
 
-import ru.korotaev.dynamic.util.SpecificationUtils;
+import ru.sergkorot.dynamic.util.SpecificationUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
-import static ru.korotaev.dynamic.model.enums.ValueType.cast;
-import static ru.korotaev.dynamic.model.enums.ValueType.collectionCast;
+import static ru.sergkorot.dynamic.model.enums.ValueType.cast;
+import static ru.sergkorot.dynamic.model.enums.ValueType.collectionCast;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 /**

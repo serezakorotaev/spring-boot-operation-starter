@@ -1,6 +1,6 @@
-package ru.korotaev.dynamic.model.paging;
+package ru.sergkorot.dynamic.model.paging;
 
-import ru.korotaev.dynamic.util.SortUtils;
+import ru.sergkorot.dynamic.util.SortUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 

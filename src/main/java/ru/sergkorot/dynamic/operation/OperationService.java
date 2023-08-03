@@ -1,13 +1,13 @@
-package ru.korotaev.dynamic.operation;
+package ru.sergkorot.dynamic.operation;
 
-import ru.korotaev.dynamic.model.ComplexSearchParam;
-import ru.korotaev.dynamic.model.PageAttribute;
-import ru.korotaev.dynamic.model.BaseSearchParam;
-import ru.korotaev.dynamic.model.enums.GlueOperation;
-import ru.korotaev.dynamic.model.enums.OperationType;
-import ru.korotaev.dynamic.model.paging.PageRequestWithOffset;
-import ru.korotaev.dynamic.util.SortUtils;
-import ru.korotaev.dynamic.util.SpecificationUtils;
+import ru.sergkorot.dynamic.model.ComplexSearchParam;
+import ru.sergkorot.dynamic.model.PageAttribute;
+import ru.sergkorot.dynamic.model.BaseSearchParam;
+import ru.sergkorot.dynamic.model.enums.GlueOperation;
+import ru.sergkorot.dynamic.model.enums.OperationType;
+import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
+import ru.sergkorot.dynamic.util.SortUtils;
+import ru.sergkorot.dynamic.util.SpecificationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;

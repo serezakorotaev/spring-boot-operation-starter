@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  ru.korotaev.dynamic.OperationProcessorAutoConfiguration
+  ru.sergkorot.dynamic.OperationProcessorAutoConfiguration
