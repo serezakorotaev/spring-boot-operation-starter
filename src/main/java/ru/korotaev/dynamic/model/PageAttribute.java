@@ -1,4 +1,4 @@
-package inova.korotaev.maven.model;
+package ru.korotaev.dynamic.model;
 
 import lombok.Data;
 

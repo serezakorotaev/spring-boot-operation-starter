@@ -1,4 +1,4 @@
-package inova.korotaev.maven.model.enums;
+package ru.korotaev.dynamic.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,13 +1,13 @@
-package inova.korotaev.maven.model.shell;
+package ru.korotaev.dynamic.model.shell;
 
-import inova.korotaev.maven.model.ComplexSearchParam;
-import inova.korotaev.maven.model.PageAttribute;
-import inova.korotaev.maven.model.enums.GlueOperation;
+import ru.korotaev.dynamic.model.ComplexSearchParam;
+import ru.korotaev.dynamic.model.PageAttribute;
+import ru.korotaev.dynamic.model.enums.GlueOperation;
 import lombok.Value;
 
 import java.util.List;
 
-import static inova.korotaev.maven.model.enums.GlueOperation.AND;
+import static ru.korotaev.dynamic.model.enums.GlueOperation.AND;
 
 /**
  * @author Sergey Korotaev

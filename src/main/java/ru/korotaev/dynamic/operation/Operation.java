@@ -1,6 +1,6 @@
-package inova.korotaev.maven.operation;
+package ru.korotaev.dynamic.operation;
 
-import inova.korotaev.maven.model.BaseSearchParam;
+import ru.korotaev.dynamic.model.BaseSearchParam;
 
 /**
  * @author Sergey Korotaev
