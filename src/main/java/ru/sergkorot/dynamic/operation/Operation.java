@@ -1,6 +1,6 @@
-package ru.korotaev.dynamic.operation;
+package ru.sergkorot.dynamic.operation;
 
-import ru.korotaev.dynamic.model.BaseSearchParam;
+import ru.sergkorot.dynamic.model.BaseSearchParam;
 
 /**
  * @author Sergey Korotaev

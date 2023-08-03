@@ -1,4 +1,4 @@
-package ru.korotaev.dynamic.util;
+package ru.sergkorot.dynamic.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

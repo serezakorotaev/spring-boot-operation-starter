@@ -1,4 +1,4 @@
-package ru.korotaev.dynamic.model;
+package ru.sergkorot.dynamic.model;
 
 import lombok.Data;
 

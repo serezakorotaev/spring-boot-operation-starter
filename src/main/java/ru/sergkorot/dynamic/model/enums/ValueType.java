@@ -1,4 +1,4 @@
-package ru.korotaev.dynamic.model.enums;
+package ru.sergkorot.dynamic.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

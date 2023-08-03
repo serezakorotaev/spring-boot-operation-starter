@@ -1,11 +1,11 @@
-package ru.korotaev.dynamic.model;
+package ru.sergkorot.dynamic.model;
 
-import ru.korotaev.dynamic.model.enums.GlueOperation;
+import ru.sergkorot.dynamic.model.enums.GlueOperation;
 import lombok.Data;
 
 import java.util.List;
 
-import static ru.korotaev.dynamic.model.enums.GlueOperation.AND;
+import static ru.sergkorot.dynamic.model.enums.GlueOperation.AND;
 
 /**
  * @author Sergey Korotaev
