@@ -18,8 +18,14 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SortUtils {
 
-    public static final int DISABLE_PAGE_VALUE = 0;
+    /**
+     * Default offset number
+     */
     public static final int DEFAULT_OFFSET = 0;
+
+    /**
+     * Default offset number
+     */
     public static final int DEFAULT_LIMIT = 200;
 
     /**

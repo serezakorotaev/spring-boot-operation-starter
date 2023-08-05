@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public enum ValueType {
 
+    /**
+     * Element of enum for casting object to the string type
+     */
     STRING_VARIABLE(String.class) {
         @Override
         public <U> Boolean checkValueType(U u) {
@@ -36,6 +39,10 @@ public enum ValueType {
         }
 
     },
+
+    /**
+     * Element of enum for casting object to the long type
+     */
     LONG_VARIABLE(Long.class) {
         @Override
         public <U> Boolean checkValueType(U u) {
@@ -58,6 +65,10 @@ public enum ValueType {
         }
 
     },
+
+    /**
+     * Element of enum for casting object to the double type
+     */
     DOUBLE_VARIABLE(Double.class) {
         @Override
         public <U> Boolean checkValueType(U u) {
@@ -83,6 +94,10 @@ public enum ValueType {
         }
 
     },
+
+    /**
+     * Element of enum for casting object to the boolean type
+     */
     BOOLEAN_VARIABLE(Boolean.class) {
         @Override
         public <U> Boolean checkValueType(U u) {
@@ -103,6 +118,10 @@ public enum ValueType {
 
 
     },
+
+    /**
+     * Element of enum for casting object to the instant type
+     */
     DATETIME_VARIABLE(Instant.class) {
         @Override
         public <U> Boolean checkValueType(U u) {

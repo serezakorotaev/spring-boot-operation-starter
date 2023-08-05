@@ -1,8 +1,8 @@
 package ru.sergkorot.dynamic.model.paging;
 
-import ru.sergkorot.dynamic.util.SortUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import ru.sergkorot.dynamic.util.SortUtils;
 
 import java.util.List;
 
@@ -12,10 +12,20 @@ import java.util.List;
  */
 public class PageRequestWithOffset extends PageRequest {
 
+    /**
+     * offset field for getting it if we need
+     */
     private final int offset;
 
+    /**
+     * Base Constructor for building PageRequest with offset and without using page
+     *
+     * @param offset - Shift relative to the beginning of the list
+     * @param size   - Number of list items to return
+     * @param sort   - settings for sort
+     */
     public PageRequestWithOffset(final int offset, final int size, final Sort sort) {
-        super(SortUtils.DISABLE_PAGE_VALUE, size, sort);
+        super(SortUtils.DEFAULT_OFFSET, size, sort);
         this.offset = offset;
     }
 

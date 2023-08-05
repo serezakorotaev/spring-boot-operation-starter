@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @param <T>
+ * @param <T> - entity for which building condition
  * @author Sergey Korotaev
  * Service for building specification for base and complex requests.
  * Also for building page request settings
