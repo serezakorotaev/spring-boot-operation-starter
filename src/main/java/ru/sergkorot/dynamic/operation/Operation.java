@@ -8,5 +8,12 @@ import ru.sergkorot.dynamic.model.BaseSearchParam;
  * @param <R> - interface for data access (for example, Specification)
  */
 public interface Operation<R> {
+
+    /**
+     * Base method from base interface for building conditions
+     * @see BaseSearchParam
+     * @param baseSearchParam - model for base search request
+     * @return - data access implementation (for example, Specification)
+     */
     R buildOperation(BaseSearchParam baseSearchParam);
 }

@@ -13,12 +13,20 @@ import java.util.function.BiFunction;
 @Getter
 @AllArgsConstructor
 public enum GlueOperation {
+
+    /**
+     * And gluing for operation
+     */
     AND {
         @Override
         public <T> Specification<T> glueOperation(Specification<T> first, Specification<T> second) {
             return parse(Specification::and, first, second);
         }
     },
+
+    /**
+     * Or gluing for operation
+     */
     OR {
         @Override
         public <T> Specification<T> glueOperation(Specification<T> first, Specification<T> second) {
@@ -29,6 +37,7 @@ public enum GlueOperation {
     /**
      * Method for gluing two specification with each other
      *
+     * @param <T> - entity for which building condition
      * @param first  - first specification for gluing
      * @param second - second specification for gluing
      * @return - specification constructed from two other
