@@ -9,6 +9,19 @@ Using a few library's methods you will have opportunity to build simple and comp
 including conjunction and disjunction with different operations such as *equals*, *like*, *lessThan*,
 *in* and others.
 
+With Spring-boot 3.x.x
+```
+        <groupId>ru.sergkorot.dynamic</groupId>
+        <artifactId>spring-boot-operation-starter</artifactId>
+        <version>1.0.1</version>
+```
+With Spring-boot 2.x.x
+
+```
+        <groupId>ru.sergkorot.dynamic</groupId>
+        <artifactId>spring-boot-operation-starter</artifactId>
+        <version>1.0.0</version>
+```
 ## 2. OperationService
 
 This class is main class in lib for using it. For using you should define the entity for which
