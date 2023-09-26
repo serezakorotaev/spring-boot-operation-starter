@@ -2,6 +2,7 @@ package ru.sergkorot.dynamic.model.paging;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.NonNull;
 import ru.sergkorot.dynamic.util.SortUtils;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class PageRequestWithOffset extends PageRequest {
      * @param sort   - settings for sort
      * @return - PageRequestWithOffset
      */
-    public static PageRequestWithOffset of(final int offset, final int limit, final Sort sort) {
+    public static PageRequestWithOffset of(final int offset, final int limit, @NonNull final Sort sort) {
         return new PageRequestWithOffset(offset, limit, sort);
     }
 
