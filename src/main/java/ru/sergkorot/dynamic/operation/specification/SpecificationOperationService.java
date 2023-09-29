@@ -1,16 +1,15 @@
 package ru.sergkorot.dynamic.operation.specification;
 
-import ru.sergkorot.dynamic.model.ComplexSearchParam;
-import ru.sergkorot.dynamic.model.BaseSearchParam;
-import ru.sergkorot.dynamic.model.enums.GlueOperation;
-import ru.sergkorot.dynamic.model.enums.OperationType;
-import ru.sergkorot.dynamic.operation.base.OperationProvider;
-import ru.sergkorot.dynamic.operation.base.OperationService;
-import ru.sergkorot.dynamic.util.SpecificationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import ru.sergkorot.dynamic.model.BaseSearchParam;
+import ru.sergkorot.dynamic.model.ComplexSearchParam;
+import ru.sergkorot.dynamic.model.enums.GlueOperation;
+import ru.sergkorot.dynamic.operation.base.OperationProvider;
+import ru.sergkorot.dynamic.operation.base.OperationService;
+import ru.sergkorot.dynamic.util.SpecificationUtils;
 
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class SpecificationOperationService<T> implements OperationService<Specif
 
         return baseSearchParams
                 .stream()
-                .map(param -> OperationType.of(param.getOperation()).getOperation(operationProvider).buildOperation(param))
+                .map(param -> buildOperation(param, operationProvider))
                 .reduce(glue::glueSpecOperation)
                 .orElse(SpecificationUtils.findAll());
     }

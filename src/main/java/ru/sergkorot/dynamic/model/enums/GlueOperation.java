@@ -5,6 +5,8 @@ import lombok.Getter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.mongodb.core.query.Criteria;
 
+import java.util.List;
+
 /**
  * @author Sergey Korotaev
  * Enum for And/or glue operation
@@ -23,9 +25,10 @@ public enum GlueOperation {
         }
 
         @Override
-        public Criteria glueCriteriaOperation(Criteria c1, Criteria c2) {
-            return c1.andOperator(c2);
+        public Criteria glueCriteriaOperation(List<Criteria> criteriaList) {
+            return new Criteria().andOperator(criteriaList);
         }
+
     },
 
     /**
@@ -38,9 +41,10 @@ public enum GlueOperation {
         }
 
         @Override
-        public Criteria glueCriteriaOperation(Criteria c1, Criteria c2) {
-            return c1.orOperator(c2);
+        public Criteria glueCriteriaOperation(List<Criteria> criteriaList) {
+            return new Criteria().orOperator(criteriaList);
         }
+
     };
 
     /**
@@ -57,9 +61,8 @@ public enum GlueOperation {
     /**
      * Method for gluing two criteria with each other
      *
-     * @param c1 - first criteria for gluing
-     * @param c2 - second criteria for gluing
+     * @param criteriaList - list with criteria parameters
      * @return - criteria constructed from two other
      */
-    public abstract Criteria glueCriteriaOperation(Criteria c1, Criteria c2);
+    public abstract Criteria glueCriteriaOperation(List<Criteria> criteriaList);
 }
