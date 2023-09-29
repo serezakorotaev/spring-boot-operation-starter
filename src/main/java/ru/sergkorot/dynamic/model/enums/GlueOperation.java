@@ -3,8 +3,7 @@ package ru.sergkorot.dynamic.model.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.jpa.domain.Specification;
-
-import java.util.function.BiFunction;
+import org.springframework.data.mongodb.core.query.Criteria;
 
 /**
  * @author Sergey Korotaev
@@ -19,8 +18,13 @@ public enum GlueOperation {
      */
     AND {
         @Override
-        public <T> Specification<T> glueOperation(Specification<T> first, Specification<T> second) {
-            return parse(Specification::and, first, second);
+        public <T> Specification<T> glueSpecOperation(Specification<T> first, Specification<T> second) {
+            return first.and(second);
+        }
+
+        @Override
+        public Criteria glueCriteriaOperation(Criteria c1, Criteria c2) {
+            return c1.andOperator(c2);
         }
     },
 
@@ -29,22 +33,33 @@ public enum GlueOperation {
      */
     OR {
         @Override
-        public <T> Specification<T> glueOperation(Specification<T> first, Specification<T> second) {
-            return parse(Specification::or, first, second);
+        public <T> Specification<T> glueSpecOperation(Specification<T> first, Specification<T> second) {
+            return first.or(second);
+        }
+
+        @Override
+        public Criteria glueCriteriaOperation(Criteria c1, Criteria c2) {
+            return c1.orOperator(c2);
         }
     };
 
     /**
      * Method for gluing two specification with each other
      *
-     * @param <T> - entity for which building condition
+     * @param <T>    - entity for which building condition
      * @param first  - first specification for gluing
      * @param second - second specification for gluing
      * @return - specification constructed from two other
      */
-    public abstract <T> Specification<T> glueOperation(Specification<T> first, Specification<T> second);
+    public abstract <T> Specification<T> glueSpecOperation(Specification<T> first, Specification<T> second);
 
-    private static <T> Specification<T> parse(BiFunction<Specification<T>, Specification<T>, Specification<T>> biFunction, Specification<T> first, Specification<T> second) {
-        return biFunction.apply(first, second);
-    }
+
+    /**
+     * Method for gluing two criteria with each other
+     *
+     * @param c1 - first criteria for gluing
+     * @param c2 - second criteria for gluing
+     * @return - criteria constructed from two other
+     */
+    public abstract Criteria glueCriteriaOperation(Criteria c1, Criteria c2);
 }
