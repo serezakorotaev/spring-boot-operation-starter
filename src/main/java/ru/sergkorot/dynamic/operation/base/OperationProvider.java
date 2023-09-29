@@ -1,4 +1,4 @@
-package ru.sergkorot.dynamic.operation;
+package ru.sergkorot.dynamic.operation.base;
 
 /**
  * @param <R> - interface for data access (for example, Specification)

@@ -1,12 +1,11 @@
-package ru.sergkorot.dynamic.operation;
+package ru.sergkorot.dynamic.operation.specification;
 
 import ru.sergkorot.dynamic.model.ComplexSearchParam;
-import ru.sergkorot.dynamic.model.PageAttribute;
 import ru.sergkorot.dynamic.model.BaseSearchParam;
 import ru.sergkorot.dynamic.model.enums.GlueOperation;
 import ru.sergkorot.dynamic.model.enums.OperationType;
-import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
-import ru.sergkorot.dynamic.util.SortUtils;
+import ru.sergkorot.dynamic.operation.base.OperationProvider;
+import ru.sergkorot.dynamic.operation.base.OperationService;
 import ru.sergkorot.dynamic.util.SpecificationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @param <T> - entity for which building condition
@@ -25,7 +23,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
-public class OperationService<T> {
+public class SpecificationOperationService<T> implements OperationService<Specification<T>> {
 
     private final OperationProvider<Specification<T>> operationProvider;
 
@@ -38,7 +36,7 @@ public class OperationService<T> {
      * @see BaseSearchParam
      * @see GlueOperation
      */
-    public Specification<T> buildBaseSpecificationByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue) {
+    public Specification<T> buildBaseByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue) {
         if (CollectionUtils.isEmpty(baseSearchParams)) {
             return SpecificationUtils.findAll();
         }
@@ -46,28 +44,8 @@ public class OperationService<T> {
         return baseSearchParams
                 .stream()
                 .map(param -> OperationType.of(param.getOperation()).getOperation(operationProvider).buildOperation(param))
-                .reduce(glue::glueOperation)
+                .reduce(glue::glueSpecOperation)
                 .orElse(SpecificationUtils.findAll());
-    }
-
-    /**
-     * Create PageRequest extension for paging and sorting settings
-     *
-     * @param pageAttribute    - attribute class for pagination and sorting
-     * @param searchSortFields - fields by which sorting is possible in the database
-     * @return - PageRequestWithOffset
-     * @see PageRequestWithOffset
-     * @see PageAttribute
-     */
-    public PageRequestWithOffset buildPageSettings(PageAttribute pageAttribute, List<String> searchSortFields) {
-        if (Objects.isNull(pageAttribute)) {
-            return PageRequestWithOffset.of(SortUtils.DEFAULT_OFFSET, SortUtils.DEFAULT_LIMIT, List.of());
-        }
-        return PageRequestWithOffset.of(
-                pageAttribute.getOffset(),
-                pageAttribute.getLimit(),
-                SortUtils.makeSortOrders(searchSortFields, pageAttribute.getSortBy())
-        );
     }
 
     /**
@@ -79,15 +57,15 @@ public class OperationService<T> {
      * @see ComplexSearchParam
      * @see GlueOperation
      */
-    public Specification<T> buildComplexSpecificationByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {
+    public Specification<T> buildComplexByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {
         return complexSearchParams.stream()
                 .map(complexSearchParam ->
-                        buildBaseSpecificationByParams(
+                        buildBaseByParams(
                                 complexSearchParam.getBaseSearchParams(),
                                 complexSearchParam.getInternalGlue()
                         )
                 )
-                .reduce(externalGlue::glueOperation)
+                .reduce(externalGlue::glueSpecOperation)
                 .orElse(SpecificationUtils.findAll());
     }
 }
