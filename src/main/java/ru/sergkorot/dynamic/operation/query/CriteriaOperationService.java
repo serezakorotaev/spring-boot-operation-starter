@@ -7,16 +7,17 @@ import org.springframework.util.CollectionUtils;
 import ru.sergkorot.dynamic.model.BaseSearchParam;
 import ru.sergkorot.dynamic.model.ComplexSearchParam;
 import ru.sergkorot.dynamic.model.enums.GlueOperation;
-import ru.sergkorot.dynamic.model.enums.OperationType;
 import ru.sergkorot.dynamic.operation.base.OperationProvider;
 import ru.sergkorot.dynamic.operation.base.OperationService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.sergkorot.dynamic.operation.query.QueryOperationProviderImpl.findAll;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class CriteriaOperationService implements OperationService<Criteria> {
 
     private final OperationProvider<Criteria> operationProvider;
@@ -24,24 +25,26 @@ public class CriteriaOperationService implements OperationService<Criteria> {
     @Override
     public Criteria buildBaseByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue) {
         if (CollectionUtils.isEmpty(baseSearchParams)) {
-            return findAll();
+            return new Criteria().andOperator(findAll());
         }
-        return baseSearchParams
+
+        List<Criteria> criteriaList = baseSearchParams
                 .stream()
-                .map(param -> OperationType.of(param.getOperation()).getOperation(operationProvider).buildOperation(param))
-                .reduce(glue::glueCriteriaOperation)
-                .orElse(findAll());
+                .map(param -> buildOperation(param, operationProvider))
+                .collect(Collectors.toList());
+
+        return glue.glueCriteriaOperation(criteriaList);
     }
 
     @Override
     public Criteria buildComplexByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {
-        return complexSearchParams.stream()
+        List<Criteria> criteriaList = complexSearchParams.stream()
                 .map(complexSearchParam ->
                         buildBaseByParams(
                                 complexSearchParam.getBaseSearchParams(),
                                 complexSearchParam.getInternalGlue()
                         ))
-                .reduce(externalGlue::glueCriteriaOperation)
-                .orElse(findAll());
+                .collect(Collectors.toList());
+        return externalGlue.glueCriteriaOperation(criteriaList);
     }
 }
