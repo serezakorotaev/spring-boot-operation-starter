@@ -6,12 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.sergkorot.dynamic.model.BaseSearchParam;
 import ru.sergkorot.dynamic.model.ComplexSearchParam;
+import ru.sergkorot.dynamic.model.PageAttribute;
 import ru.sergkorot.dynamic.model.enums.GlueOperation;
+import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
 import ru.sergkorot.dynamic.operation.base.OperationProvider;
 import ru.sergkorot.dynamic.operation.base.OperationService;
+import ru.sergkorot.dynamic.util.SortUtils;
 import ru.sergkorot.dynamic.util.SpecificationUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @param <T> - entity for which building condition
@@ -66,5 +70,25 @@ public class SpecificationOperationService<T> implements OperationService<Specif
                 )
                 .reduce(externalGlue::glueSpecOperation)
                 .orElse(SpecificationUtils.findAll());
+    }
+
+    /**
+     * Create PageRequest extension for paging and sorting settings
+     *
+     * @param pageAttribute    - attribute class for pagination and sorting
+     * @param searchSortFields - fields by which sorting is possible in the database
+     * @return - PageRequestWithOffset
+     * @see PageRequestWithOffset
+     * @see PageAttribute
+     */
+    public PageRequestWithOffset buildPageSettings(PageAttribute pageAttribute, List<String> searchSortFields) {
+        if (Objects.isNull(pageAttribute)) {
+            return PageRequestWithOffset.of(SortUtils.DEFAULT_OFFSET, SortUtils.DEFAULT_LIMIT, List.of());
+        }
+        return PageRequestWithOffset.of(
+                pageAttribute.getOffset(),
+                pageAttribute.getLimit(),
+                SortUtils.makeSortOrders(searchSortFields, pageAttribute.getSortBy())
+        );
     }
 }

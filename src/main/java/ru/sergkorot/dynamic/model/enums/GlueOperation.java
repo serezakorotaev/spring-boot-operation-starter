@@ -59,10 +59,10 @@ public enum GlueOperation {
 
 
     /**
-     * Method for gluing two criteria with each other
+     * Method for gluing criteria with criteria list by condition
      *
      * @param criteriaList - list with criteria parameters
-     * @return - criteria constructed from two other
+     * @return - criteria constructed from others
      */
     public abstract Criteria glueCriteriaOperation(List<Criteria> criteriaList);
 }
