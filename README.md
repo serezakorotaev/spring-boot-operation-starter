@@ -10,11 +10,13 @@ including conjunction and disjunction with different operations such as *equals*
 *in* and others.
 
 With Spring-boot 3.x.x
+
 ```
         <groupId>ru.sergkorot.dynamic</groupId>
         <artifactId>spring-boot-operation-starter</artifactId>
         <version>1.0.1</version>
 ```
+
 With Spring-boot 2.x.x
 
 ```
@@ -22,26 +24,32 @@ With Spring-boot 2.x.x
         <artifactId>spring-boot-operation-starter</artifactId>
         <version>1.0.0</version>
 ```
+
 ## 2. OperationService
 
-This class is main class in lib for using it. For using you should define the entity for which
-will use this class
+This is an interface for building requests into the databases with different parameters and glue option.
+At the moment are existed two implementation of this interface: `SpecificationOperationService`
+and `CriteriaOperationService`
 
-`OperationService<Entity> operationService`
+### 2.1 SpecificationOperationService
+
+This class is main class in lib for build request into the relation databases. For using you should define the entity
+for which will use this class
+
+`SpecificationOperationService<Entity> operationService`
 
 after that, you can build queries for this entity.
 
-`OperationService` has methods for creating simple and complex requests into the database
-and also for creating page settings.
+`SpecificationOperationService` implements methods for creating simple and complex requests into the database
+and also has method for creating page settings.
 
-- a. `Specification<T> buildBaseSpecificationByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue)`
+- a. `Specification<T> buildBaseByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue)`
 
 Method for building base request using search parameters (baseSearchParams)
 and condition for linking parameters (glue). `BaseSearchParam` and `GlueOperation` classes will be described
 below.
 
--
-b. `Specification<T> buildComplexSpecificationByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue)`
+- b. `Specification<T> buildComplexByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue)`
 
 Method for building complex request using structure with base search parameters (complexSearchParams)
 and condition for linking base parameters with each other (externalGlue). `ComplexSearchParam` class will be described
@@ -52,6 +60,40 @@ below.
 Method for building page settings (limit, offset and sorting) using class with page parameters (pageAttribute)
 and list with fields for which will be applied sorting (searchSortFields). `PageAttribute` class will be described
 below.
+
+### 2.1 CriteriaOperationService
+
+This class is main class in lib for build request into the MongoDb. For using you do not need to define the entity
+for which will use this class kind of with `SpecificationOperationService`
+
+`CriteriaOperationService criteriaOperationService`
+
+After that, you can build Query for searching.
+
+`CriteriaOperationService` implements methods for creating simple and complex requests into the database
+and also has method for creating page settings.
+
+- a. `Criteria buildBaseByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue)`
+
+Method for building base request using search parameters (baseSearchParams)
+and condition for linking parameters (glue). `BaseSearchParam` and `GlueOperation` classes will be described
+below.
+
+- b. `Criteria buildComplexByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue)`
+
+Method for building complex request using structure with base search parameters (complexSearchParams)
+and condition for linking base parameters with each other (externalGlue). `ComplexSearchParam` class will be described
+below.
+
+- c. `Query buildPageSettings(Query query, PageAttribute pageAttribute, List<String> searchSortFields)`
+
+Method for building query with paging settings (limit, offset and sorting) using class with page parameters (pageAttribute)
+and list with fields for which will be applied sorting (searchSortFields). `PageAttribute` class will be described
+below. Recommended use this method for creating query with already defining criteria settings because if you want to add criteria after
+then you will spend more time under the box (internal method addCriteria). For example,
+
+ `operationService.buildPageSettings(new Query(criteria), shell.getPageAttribute(), SORTED_FIELDS);`
+
 
 ## 3. Supported operations
 
@@ -208,6 +250,7 @@ For searching and paging are three base models - `BaseSearchParam`, `ComplexSear
 And Also shell for them are `CommonOperationShell` and `MultipleOperationShell`.
 
 ### `BaseSearchParam`
+
   ```
   class BaseSearchParam {
     private String name;
@@ -215,7 +258,9 @@ And Also shell for them are `CommonOperationShell` and `MultipleOperationShell`.
     private String operation;
   }
   ```
-  Is base class for searching. it has
+
+Is base class for searching. it has
+
 - `name` - field's name which need to search
 - `value` - value which need to find
 - `operation` - operation name which describe above
@@ -228,6 +273,7 @@ And Also shell for them are `CommonOperationShell` and `MultipleOperationShell`.
             "operation": "eq"
         }
 ```
+
 ### `ComplexSearchParam`
 
 ```
@@ -236,9 +282,11 @@ And Also shell for them are `CommonOperationShell` and `MultipleOperationShell`.
       GlueOperation internalGlue = AND;
   }
 ```
-  is more complex class for searching. It has 
-  - list `baseSearchParams` which has fields and operations for searching
-  - `internalGlue` which allows you to glue all given conditions. AND/OR value
+
+is more complex class for searching. It has
+
+- list `baseSearchParams` which has fields and operations for searching
+- `internalGlue` which allows you to glue all given conditions. AND/OR value
 
 ```
     Example:
@@ -268,15 +316,18 @@ And Also shell for them are `CommonOperationShell` and `MultipleOperationShell`.
       private String sortBy;
   }
   ```
+
 Is used for building page settings for paging
+
 - `limit` Number of list items to return
 - `offset` Shift relative to the beginning of the list
 - `sortBy` Parameter for sorting. Perhaps multiple sorting through comma (name,-surname),
-which means name ASC and surname DESC
+  which means name ASC and surname DESC
 
 ## 5. Request examples
 
 base search:
+
   ```
   {
     "baseSearchParams": [
@@ -299,7 +350,9 @@ base search:
     }
   }
   ```
-In example above, is used `CommonOperationShell` for simple request 
+
+In example above, is used `CommonOperationShell` for simple request
+
   ```
 (
 Find all where name.equals("Ian.Hessel") or description.equals("withdrawal")
@@ -308,6 +361,7 @@ with limit=10 and offset=0 and sort by name ASC
   ```
 
 complex search:
+
   ```
   {
     "search": [
@@ -348,7 +402,9 @@ complex search:
     }
   }
   ```
-In example above, is used `MultipleOperationShell` for complex request 
+
+In example above, is used `MultipleOperationShell` for complex request
+
   ```
 (
 find all where (name.equals("Rhett14") and version in(0, 2)) or (name.equals("Reggie19") and description like ("%Up-sized%"))
@@ -360,6 +416,7 @@ find all where (name.equals("Rhett14") and version in(0, 2)) or (name.equals("Re
 ### Utils
 
 #### `RegexpUtils` `RegexpUtils.transformToArrayFieldsNames(String fieldsNames)`
+
 Util is used for transforming string by pattern to list strings with strings for further paging
 
   ```
@@ -370,7 +427,8 @@ Util is used for transforming string by pattern to list strings with strings for
 
 #### `SortUtils` `SortUtils.makeSortOrders(final Collection<String> validNames, final String sortValues)`
 
-Util is used for transforming string by pattern inside (uses RegexpUtils) to list org.springframework.data.domain.Sort.Order class
+Util is used for transforming string by pattern inside (uses RegexpUtils) to list
+org.springframework.data.domain.Sort.Order class
 and checking by validNames if it can build Sort.Order by these sortValue names
 
   ```
@@ -401,6 +459,7 @@ Util is used for building different specifications for request. Contains a lot o
 More detail in javadoc
 
 #### `PageRequestWithOffset`
+
 PageRequest extension for building page settings
 
   ```
