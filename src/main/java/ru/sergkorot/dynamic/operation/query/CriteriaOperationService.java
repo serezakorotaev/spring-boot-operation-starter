@@ -2,13 +2,16 @@ package ru.sergkorot.dynamic.operation.query;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.sergkorot.dynamic.model.BaseSearchParam;
 import ru.sergkorot.dynamic.model.ComplexSearchParam;
+import ru.sergkorot.dynamic.model.PageAttribute;
 import ru.sergkorot.dynamic.model.enums.GlueOperation;
 import ru.sergkorot.dynamic.operation.base.OperationProvider;
 import ru.sergkorot.dynamic.operation.base.OperationService;
+import ru.sergkorot.dynamic.util.SortUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,5 +49,20 @@ public class CriteriaOperationService implements OperationService<Criteria> {
                         ))
                 .collect(Collectors.toList());
         return externalGlue.glueCriteriaOperation(criteriaList);
+    }
+
+    /**
+     * Create PageRequest extension for paging and sorting settings
+     *
+     * @param query            - query for mongodb request
+     * @param pageAttribute    - attribute class for pagination and sorting
+     * @param searchSortFields - fields by which sorting is possible in the database
+     * @see PageAttribute
+     */
+    public Query buildPageSettings(Query query, PageAttribute pageAttribute, List<String> searchSortFields) {
+        return query
+                .limit(pageAttribute.getLimit())
+                .skip(pageAttribute.getOffset())
+                .with(SortUtils.makeSort(searchSortFields, pageAttribute.getSortBy()));
     }
 }
