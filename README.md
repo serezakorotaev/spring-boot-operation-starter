@@ -4,6 +4,17 @@
 From maven central <br>
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/ru.sergkorot/spring-boot-operation-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/ru.sergkorot.dynamic/spring-boot-operation-starter)
 
+```xml
+<dependency>
+    <groupId>ru.sergkorot.dynamic</groupId>
+    <artifactId>spring-boot-operation-starter</artifactId>
+    <version>x.x.x</version>
+</dependency>
+```
+
+```gradle
+implementation 'ru.sergkorot.dynamic:spring-boot-operation-starter:x.x.x'
+```
 
 # Content list
  
@@ -47,18 +58,6 @@ Library helps to developers to build more flexible requests and page settings.
 Using a few library's methods you will have opportunity to build simple and complex requests,
 including conjunction and disjunction with different operations such as *equals*, *like*, *lessThan*,
 *in* and others.
-
-```xml
-<dependency>
-    <groupId>ru.sergkorot.dynamic</groupId>
-    <artifactId>spring-boot-operation-starter</artifactId>
-    <version>x.x.x</version>
-</dependency>
-```
-
-```gradle
-implementation 'ru.sergkorot.dynamic:spring-boot-operation-starter:x.x.x'
-```
 
 
 ## 2. [OperationService](#content-list)
