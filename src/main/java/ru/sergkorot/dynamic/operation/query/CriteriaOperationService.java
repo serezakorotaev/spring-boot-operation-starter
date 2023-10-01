@@ -16,8 +16,6 @@ import ru.sergkorot.dynamic.util.SortUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.sergkorot.dynamic.operation.query.QueryOperationProviderImpl.findAll;
-
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
@@ -28,7 +26,7 @@ public class CriteriaOperationService implements OperationService<Criteria> {
     @Override
     public Criteria buildBaseByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue) {
         if (CollectionUtils.isEmpty(baseSearchParams)) {
-            return new Criteria().andOperator(findAll());
+            return new Criteria();
         }
 
         List<Criteria> criteriaList = baseSearchParams

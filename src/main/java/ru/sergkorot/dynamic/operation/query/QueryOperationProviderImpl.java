@@ -71,13 +71,4 @@ public class QueryOperationProviderImpl implements OperationProvider<Criteria> {
                         .toArray(Criteria[]::new)
         );
     }
-
-    /**
-     * Find all documents into the database
-     *
-     * @return Criteria
-     */
-    public static Criteria findAll() {
-        return Criteria.where("_id").isNull().not();
-    }
 }
