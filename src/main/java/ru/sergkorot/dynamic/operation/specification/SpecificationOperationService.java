@@ -1,17 +1,18 @@
-package ru.sergkorot.dynamic.operation;
+package ru.sergkorot.dynamic.operation.specification;
 
-import ru.sergkorot.dynamic.model.ComplexSearchParam;
-import ru.sergkorot.dynamic.model.PageAttribute;
-import ru.sergkorot.dynamic.model.BaseSearchParam;
-import ru.sergkorot.dynamic.model.enums.GlueOperation;
-import ru.sergkorot.dynamic.model.enums.OperationType;
-import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
-import ru.sergkorot.dynamic.util.SortUtils;
-import ru.sergkorot.dynamic.util.SpecificationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import ru.sergkorot.dynamic.model.BaseSearchParam;
+import ru.sergkorot.dynamic.model.ComplexSearchParam;
+import ru.sergkorot.dynamic.model.PageAttribute;
+import ru.sergkorot.dynamic.model.enums.GlueOperation;
+import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
+import ru.sergkorot.dynamic.operation.base.OperationProvider;
+import ru.sergkorot.dynamic.operation.base.OperationService;
+import ru.sergkorot.dynamic.util.SortUtils;
+import ru.sergkorot.dynamic.util.SpecificationUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +26,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
-public class OperationService<T> {
+public class SpecificationOperationService<T> implements OperationService<Specification<T>> {
 
     private final OperationProvider<Specification<T>> operationProvider;
 
@@ -38,15 +39,36 @@ public class OperationService<T> {
      * @see BaseSearchParam
      * @see GlueOperation
      */
-    public Specification<T> buildBaseSpecificationByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue) {
+    public Specification<T> buildBaseByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue) {
         if (CollectionUtils.isEmpty(baseSearchParams)) {
             return SpecificationUtils.findAll();
         }
 
         return baseSearchParams
                 .stream()
-                .map(param -> OperationType.of(param.getOperation()).getOperation(operationProvider).buildOperation(param))
-                .reduce(glue::glueOperation)
+                .map(param -> buildOperation(param, operationProvider))
+                .reduce(glue::glueSpecOperation)
+                .orElse(SpecificationUtils.findAll());
+    }
+
+    /**
+     * Create specification for complex search request
+     *
+     * @param complexSearchParams - model for complex search request
+     * @param externalGlue        - condition for gluing complex specification between each other
+     * @return - specification for data request
+     * @see ComplexSearchParam
+     * @see GlueOperation
+     */
+    public Specification<T> buildComplexByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {
+        return complexSearchParams.stream()
+                .map(complexSearchParam ->
+                        buildBaseByParams(
+                                complexSearchParam.getBaseSearchParams(),
+                                complexSearchParam.getInternalGlue()
+                        )
+                )
+                .reduce(externalGlue::glueSpecOperation)
                 .orElse(SpecificationUtils.findAll());
     }
 
@@ -68,26 +90,5 @@ public class OperationService<T> {
                 pageAttribute.getLimit(),
                 SortUtils.makeSortOrders(searchSortFields, pageAttribute.getSortBy())
         );
-    }
-
-    /**
-     * Create specification for complex search request
-     *
-     * @param complexSearchParams - model for complex search request
-     * @param externalGlue        - condition for gluing complex specification between each other
-     * @return - specification for data request
-     * @see ComplexSearchParam
-     * @see GlueOperation
-     */
-    public Specification<T> buildComplexSpecificationByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {
-        return complexSearchParams.stream()
-                .map(complexSearchParam ->
-                        buildBaseSpecificationByParams(
-                                complexSearchParam.getBaseSearchParams(),
-                                complexSearchParam.getInternalGlue()
-                        )
-                )
-                .reduce(externalGlue::glueOperation)
-                .orElse(SpecificationUtils.findAll());
     }
 }

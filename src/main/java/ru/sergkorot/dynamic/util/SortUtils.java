@@ -35,6 +35,19 @@ public final class SortUtils {
      * @param sortValues string with parameters for sorting, type: "id,-name"
      *                   "-value" - sort by DESC;
      *                   "value" - sort by ASC
+     * @return Sort
+     */
+    public static Sort makeSort(final Collection<String> validNames, final String sortValues) {
+        return Sort.by(makeSortOrders(validNames, sortValues));
+    }
+
+    /**
+     * Method for getting sort order
+     *
+     * @param validNames list of parameter names that match sorting
+     * @param sortValues string with parameters for sorting, type: "id,-name"
+     *                   "-value" - sort by DESC;
+     *                   "value" - sort by ASC
      * @return Sort.Order - list with sorting parameters
      */
     public static List<Sort.Order> makeSortOrders(final Collection<String> validNames, final String sortValues) {
