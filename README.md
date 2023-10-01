@@ -1,37 +1,73 @@
 # spring-boot-operation-starter
 
 ### Library for dynamic search into the database
+From maven central <br>
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/ru.sergkorot/spring-boot-operation-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/ru.sergkorot.dynamic/spring-boot-operation-starter)
 
-## 1. About Library
+
+# Content list
+ 
+ [About library](#1-about-library)
+
+
+ [OperationService](#2-operationservice)
+ - [SpecificationOperationService](#21-specificationoperationservice)
+ - [CriteriaOperationService](#22-criteriaoperationservice)
+
+ [Supported operations](#3-supported-operations)
+- [IN](#in)
+- [NOT IN](#notin)
+- [LIKE](#like)
+- [EQUAL](#equal)
+- [NOT EQUAL](#notequal)
+- [IS NULL](#isnull)
+- [LESS THAN](#lessthan)
+- [GREATER THAN](#greaterthan)
+- [LESS THAN OR EQUALS](#lessthanorequals)
+- [GREATER THAN OR EQUALS](#greaterthanorequals)
+- [CONTAINS](#contains)
+
+ [Models for searching and paging](#4-models-for-searching-and-paging)
+- [BaseSearchParam](#basesearchparam)
+- [ComplexSearchParam](#complexsearchparam)
+- [PageAttribute](#pageattribute)
+
+ [Request examples](#5-request-examples)
+
+ [Other useful classes](#6-other-useful-classes)
+- [Utils](#utils)
+- [RegexpUtils](#regexputils)
+- [SortUtils](#sortutils)
+- [SpecificationUtils](#specificationutils)
+- [PageRequestWithOffset](#pagerequestwithoffset)
+
+## 1. [About Library](#content-list)
 
 Library helps to developers to build more flexible requests and page settings.
 Using a few library's methods you will have opportunity to build simple and complex requests,
 including conjunction and disjunction with different operations such as *equals*, *like*, *lessThan*,
 *in* and others.
 
-With Spring-boot 3.x.x
-
-```
-        <groupId>ru.sergkorot.dynamic</groupId>
-        <artifactId>spring-boot-operation-starter</artifactId>
-        <version>1.0.1</version>
-```
-
-With Spring-boot 2.x.x
-
-```
-        <groupId>ru.sergkorot.dynamic</groupId>
-        <artifactId>spring-boot-operation-starter</artifactId>
-        <version>1.0.0</version>
+```xml
+<dependency>
+    <groupId>ru.sergkorot.dynamic</groupId>
+    <artifactId>spring-boot-operation-starter</artifactId>
+    <version>x.x.x</version>
+</dependency>
 ```
 
-## 2. OperationService
+```gradle
+implementation 'ru.sergkorot.dynamic:spring-boot-operation-starter:x.x.x'
+```
+
+
+## 2. [OperationService](#content-list)
 
 This is an interface for building requests into the databases with different parameters and glue option.
 At the moment are existed two implementation of this interface: `SpecificationOperationService`
 and `CriteriaOperationService`
 
-### 2.1 SpecificationOperationService
+### 2.1 [SpecificationOperationService](#content-list)
 
 This class is main class in lib for build request into the relation databases. For using you should define the entity
 for which will use this class
@@ -61,7 +97,7 @@ Method for building page settings (limit, offset and sorting) using class with p
 and list with fields for which will be applied sorting (searchSortFields). `PageAttribute` class will be described
 below.
 
-### 2.1 CriteriaOperationService
+### 2.2 [CriteriaOperationService](#content-list)
 
 This class is main class in lib for build request into the MongoDb. For using you do not need to define the entity
 for which will use this class kind of with `SpecificationOperationService`
@@ -95,13 +131,13 @@ then you will spend more time under the box (internal method addCriteria). For e
  `operationService.buildPageSettings(new Query(criteria), shell.getPageAttribute(), SORTED_FIELDS);`
 
 
-## 3. Supported operations
+## 3. [Supported operations](#content-list)
 
 In library has different operations for searching. User need to select operation in field "operation" and it will be
 processed.
 All operations are in `OperationType` and interface for their implementation in `OperationProvider<R>`.
 
-### IN
+### [IN](#content-list)
 
 IN operation is used for searching records by specified elements
 
@@ -114,7 +150,7 @@ IN operation is used for searching records by specified elements
 
 In example above, predicate will be built with condition (find all by name in (John,Max))
 
-### NOT_IN
+### [NOT_IN](#content-list)
 
 NOT_IN operation is used for searching records without specified elements
 
@@ -127,7 +163,7 @@ NOT_IN operation is used for searching records without specified elements
 
 In example above, predicate will be built with condition (find all by name not in (John,Max))
 
-### LIKE
+### [LIKE](#content-list)
 
 Like operation is used for searching records where contains specified string
 
@@ -140,7 +176,7 @@ Like operation is used for searching records where contains specified string
 
 In example above, predicate will be built with condition (find all by name like (%Jo%))
 
-### EQUAL
+### [EQUAL](#content-list)
 
 Equal operation is used for searching records by strict match
 
@@ -153,7 +189,7 @@ Equal operation is used for searching records by strict match
 
 In example above, predicate will be built with condition (find all where version = 1)
 
-### NOT_EQUAL
+### [NOT_EQUAL](#content-list)
 
 Not equal operation is used for searching records where elements haven't specified value
 
@@ -166,7 +202,7 @@ Not equal operation is used for searching records where elements haven't specifi
 
 In example above, predicate will be built with condition (find all where version != 1)
 
-### IS_NULL
+### [IS_NULL](#content-list)
 
 Is null operation is used for searching records where elements haven't null value
 
@@ -178,7 +214,7 @@ Is null operation is used for searching records where elements haven't null valu
 
 In example above, predicate will be built with condition (find all where version is null)
 
-### LESS_THAN
+### [LESS_THAN](#content-list)
 
 Less than operation is used for searching comparing records where elements less than specified
 
@@ -191,7 +227,7 @@ Less than operation is used for searching comparing records where elements less 
 
 In example above, predicate will be built with condition (find all where age < 20)
 
-### GREATER_THAN
+### [GREATER_THAN](#content-list)
 
 Greater than operation is used for searching comparing records where elements greater than specified
 
@@ -204,7 +240,7 @@ Greater than operation is used for searching comparing records where elements gr
 
 In example above, predicate will be built with condition (find all where age > 20)
 
-### LESS_THAN_OR_EQUALS
+### [LESS_THAN_OR_EQUALS](#content-list)
 
 Less than operation is used for searching comparing records where elements less than or equal specified
 
@@ -217,7 +253,7 @@ Less than operation is used for searching comparing records where elements less 
 
 In example above, predicate will be built with condition (find all where age <= 21)
 
-### GREATER_THAN_OR_EQUALS
+### [GREATER_THAN_OR_EQUALS](#content-list)
 
 Less than operation is used for searching comparing records where elements greater than or equal specified
 
@@ -230,7 +266,7 @@ Less than operation is used for searching comparing records where elements great
 
 In example above, predicate will be built with condition (find all where age >= 21)
 
-### CONTAINS
+### [CONTAINS](#content-list)
 
 Contains operation is used for searching records where elements contains specified values (operation also is used for
 jsonb fields)
@@ -244,12 +280,12 @@ jsonb fields)
 
 In example above, predicate will be built with condition (find all where description contains (a and is strings))
 
-## 4. Models for searching and paging
+## 4. [Models for searching and paging](#content-list)
 
 For searching and paging are three base models - `BaseSearchParam`, `ComplexSearchParam` and `PageAttribute`.
 And Also shell for them are `CommonOperationShell` and `MultipleOperationShell`.
 
-### `BaseSearchParam`
+### [`BaseSearchParam`](#content-list)
 
   ```
   class BaseSearchParam {
@@ -274,7 +310,7 @@ Is base class for searching. it has
         }
 ```
 
-### `ComplexSearchParam`
+### [`ComplexSearchParam`](#content-list)
 
 ```
   class ComplexSearchParam {
@@ -307,7 +343,7 @@ is more complex class for searching. It has
     }
 ```
 
-### `PageAttribute`
+### [`PageAttribute`](#content-list)
 
   ```
   class PageAttribute {
@@ -324,7 +360,7 @@ Is used for building page settings for paging
 - `sortBy` Parameter for sorting. Perhaps multiple sorting through comma (name,-surname),
   which means name ASC and surname DESC
 
-## 5. Request examples
+## 5. [Request examples](#content-list)
 
 base search:
 
@@ -411,11 +447,12 @@ find all where (name.equals("Rhett14") and version in(0, 2)) or (name.equals("Re
 )
   ```
 
-## 6. Other useful classes
+## 6. [Other useful classes](#content-list)
 
-### Utils
+### [Utils](#content-list)
 
-#### `RegexpUtils` `RegexpUtils.transformToArrayFieldsNames(String fieldsNames)`
+#### [`RegexpUtils`](#content-list)
+ - `RegexpUtils.transformToArrayFieldsNames(String fieldsNames)`
 
 Util is used for transforming string by pattern to list strings with strings for further paging
 
@@ -425,10 +462,18 @@ Util is used for transforming string by pattern to list strings with strings for
   
   ```
 
-#### `SortUtils` `SortUtils.makeSortOrders(final Collection<String> validNames, final String sortValues)`
+#### [`SortUtils`](#content-list)
+
+- `SortUtils.makeSortOrders(final Collection<String> validNames, final String sortValues)`
 
 Util is used for transforming string by pattern inside (uses RegexpUtils) to list
 org.springframework.data.domain.Sort.Order class
+and checking by validNames if it can build Sort.Order by these sortValue names
+
+- `SortUtils.makeSort(final Collection<String> validNames, final String sortValues)`
+
+Util is used for transforming string by pattern inside (uses RegexpUtils) to list
+org.springframework.data.domain.Sort class
 and checking by validNames if it can build Sort.Order by these sortValue names
 
   ```
@@ -438,7 +483,7 @@ and checking by validNames if it can build Sort.Order by these sortValue names
   
   ```
 
-#### `SpecificationUtils`
+#### [`SpecificationUtils`](#content-list)
 
 Util is used for building different specifications for request. Contains a lot of static methods:
 
@@ -458,7 +503,7 @@ Util is used for building different specifications for request. Contains a lot o
 
 More detail in javadoc
 
-#### `PageRequestWithOffset`
+#### [`PageRequestWithOffset`](#content-list)
 
 PageRequest extension for building page settings
 
