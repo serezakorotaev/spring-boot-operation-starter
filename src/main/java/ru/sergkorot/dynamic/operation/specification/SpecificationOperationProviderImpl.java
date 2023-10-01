@@ -1,14 +1,16 @@
-package ru.sergkorot.dynamic.operation;
+package ru.sergkorot.dynamic.operation.specification;
 
-import ru.sergkorot.dynamic.util.SpecificationUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import ru.sergkorot.dynamic.operation.base.Operation;
+import ru.sergkorot.dynamic.operation.base.OperationProvider;
+import ru.sergkorot.dynamic.util.SpecificationUtils;
 
 import java.util.Collections;
 
+import static org.springframework.data.jpa.domain.Specification.where;
 import static ru.sergkorot.dynamic.model.enums.ValueType.cast;
 import static ru.sergkorot.dynamic.model.enums.ValueType.collectionCast;
-import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
  * @author Sergey Korotaev

@@ -1,4 +1,4 @@
-package ru.sergkorot.dynamic.operation;
+package ru.sergkorot.dynamic.operation.base;
 
 import ru.sergkorot.dynamic.model.BaseSearchParam;
 
