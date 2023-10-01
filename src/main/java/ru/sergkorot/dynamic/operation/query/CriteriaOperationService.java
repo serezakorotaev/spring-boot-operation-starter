@@ -16,6 +16,11 @@ import ru.sergkorot.dynamic.util.SortUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author sykorotaye
+ * Service for building requests into the mongodb with pagination
+ * @see OperationService
+ */
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings("unused")
@@ -56,6 +61,7 @@ public class CriteriaOperationService implements OperationService<Criteria> {
      * @param pageAttribute    - attribute class for pagination and sorting
      * @param searchSortFields - fields by which sorting is possible in the database
      * @see PageAttribute
+     * @return Query
      */
     public Query buildPageSettings(Query query, PageAttribute pageAttribute, List<String> searchSortFields) {
         return query
