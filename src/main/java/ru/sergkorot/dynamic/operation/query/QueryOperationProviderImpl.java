@@ -11,6 +11,11 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static ru.sergkorot.dynamic.model.enums.ValueType.cast;
 import static ru.sergkorot.dynamic.model.enums.ValueType.collectionCast;
 
+/**
+ * @author sykorotaye
+ * Implementation of OperationProvider that implements operations for building criteria for requests into the mongodb
+ * @see OperationProvider
+ */
 @Component
 public class QueryOperationProviderImpl implements OperationProvider<Criteria> {
     @Override
