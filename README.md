@@ -1,4 +1,6 @@
 # spring-boot-operation-starter
+Status of Last Deployment:<br>
+<img src="https://github.com/serezakorotaev/spring-boot-operation-starter/workflows/CI-operation-starter/badge.svg?branch=master"><br>
 
 ### Library for dynamic search into the database
 From maven central <br>
