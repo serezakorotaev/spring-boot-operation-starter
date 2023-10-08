@@ -13,6 +13,28 @@ From maven central <br>
     <version>x.x.x</version>
 </dependency>
 ```
+or
+```xml
+
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>ru.sergkorot.dynamic</groupId>
+            <artifactId>operation-bom</artifactId>
+            <version>x.x.x</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and after version will pull like into the bom
+```xml
+<dependency>
+    <groupId>ru.sergkorot.dynamic</groupId>
+    <artifactId>spring-boot-operation-starter</artifactId>
+</dependency>
+```
 
 ```gradle
 implementation 'ru.sergkorot.dynamic:spring-boot-operation-starter:x.x.x'
@@ -25,7 +47,6 @@ implementation 'ru.sergkorot.dynamic:spring-boot-operation-starter:x.x.x'
 
  [OperationService](#2-operationservice)
  - [SpecificationOperationService](#21-specificationoperationservice)
- - [CriteriaOperationService](#22-criteriaoperationservice)
 
  [Supported operations](#3-supported-operations)
 - [IN](#in)
@@ -66,7 +87,7 @@ including conjunction and disjunction with different operations such as *equals*
 
 This is an interface for building requests into the databases with different parameters and glue option.
 At the moment are existed two implementation of this interface: `SpecificationOperationService`
-and `CriteriaOperationService`
+and `CriteriaOperationService`. `CriteriaOperationService` implementation is used to the [spring-boot-operation-mongodb-starter](https://github.com/serezakorotaev/spring-boot-operation-mongodb-starter)
 
 ### 2.1 [SpecificationOperationService](#content-list)
 
@@ -97,40 +118,6 @@ below.
 Method for building page settings (limit, offset and sorting) using class with page parameters (pageAttribute)
 and list with fields for which will be applied sorting (searchSortFields). `PageAttribute` class will be described
 below.
-
-### 2.2 [CriteriaOperationService](#content-list)
-
-This class is main class in lib for build request into the MongoDb. For using you do not need to define the entity
-for which will use this class kind of with `SpecificationOperationService`
-
-`CriteriaOperationService criteriaOperationService`
-
-After that, you can build Query for searching.
-
-`CriteriaOperationService` implements methods for creating simple and complex requests into the database
-and also has method for creating page settings.
-
-- a. `Criteria buildBaseByParams(List<BaseSearchParam> baseSearchParams, GlueOperation glue)`
-
-Method for building base request using search parameters (baseSearchParams)
-and condition for linking parameters (glue). `BaseSearchParam` and `GlueOperation` classes will be described
-below.
-
-- b. `Criteria buildComplexByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue)`
-
-Method for building complex request using structure with base search parameters (complexSearchParams)
-and condition for linking base parameters with each other (externalGlue). `ComplexSearchParam` class will be described
-below.
-
-- c. `Query buildPageSettings(Query query, PageAttribute pageAttribute, List<String> searchSortFields)`
-
-Method for building query with paging settings (limit, offset and sorting) using class with page parameters (pageAttribute)
-and list with fields for which will be applied sorting (searchSortFields). `PageAttribute` class will be described
-below. Recommended use this method for creating query with already defining criteria settings because if you want to add criteria after
-then you will spend more time under the box (internal method addCriteria). For example,
-
- `operationService.buildPageSettings(new Query(criteria), shell.getPageAttribute(), SORTED_FIELDS);`
-
 
 ## 3. [Supported operations](#content-list)
 
