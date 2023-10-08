@@ -9,8 +9,8 @@ import ru.sergkorot.dynamic.model.ComplexSearchParam;
 import ru.sergkorot.dynamic.model.PageAttribute;
 import ru.sergkorot.dynamic.model.enums.GlueOperation;
 import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
-import ru.sergkorot.dynamic.operation.base.OperationProvider;
-import ru.sergkorot.dynamic.operation.base.OperationService;
+import ru.sergkorot.dynamic.operation.OperationProvider;
+import ru.sergkorot.dynamic.operation.OperationService;
 import ru.sergkorot.dynamic.util.SortUtils;
 import ru.sergkorot.dynamic.util.SpecificationUtils;
 
