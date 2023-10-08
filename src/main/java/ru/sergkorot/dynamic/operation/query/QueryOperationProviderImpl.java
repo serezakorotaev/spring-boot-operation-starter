@@ -2,8 +2,8 @@ package ru.sergkorot.dynamic.operation.query;
 
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
-import ru.sergkorot.dynamic.operation.base.Operation;
-import ru.sergkorot.dynamic.operation.base.OperationProvider;
+import ru.sergkorot.dynamic.operation.Operation;
+import ru.sergkorot.dynamic.operation.OperationProvider;
 
 import java.util.Arrays;
 
@@ -18,6 +18,7 @@ import static ru.sergkorot.dynamic.model.enums.ValueType.collectionCast;
  */
 @Component
 public class QueryOperationProviderImpl implements OperationProvider<Criteria> {
+
     @Override
     public Operation<Criteria> like() {
         return param -> where(param.getName()).regex(param.getValue().toString(), "i");
