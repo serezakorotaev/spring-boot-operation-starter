@@ -1,9 +1,7 @@
-package ru.sergkorot.dynamic.operation.specification;
+package ru.sergkorot.dynamic.operation;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import ru.sergkorot.dynamic.operation.Operation;
-import ru.sergkorot.dynamic.operation.OperationProvider;
 import ru.sergkorot.dynamic.util.SpecificationUtils;
 
 import java.util.Collections;
