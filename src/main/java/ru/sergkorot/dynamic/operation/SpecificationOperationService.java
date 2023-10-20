@@ -1,6 +1,5 @@
 package ru.sergkorot.dynamic.operation;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -13,7 +12,10 @@ import ru.sergkorot.dynamic.util.SortUtils;
 import ru.sergkorot.dynamic.util.SpecificationUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @param <T> - entity for which building condition
@@ -22,11 +24,19 @@ import java.util.Objects;
  * Also for building page request settings
  */
 @Service
-@RequiredArgsConstructor
 @SuppressWarnings("unused")
 public class SpecificationOperationService<T> implements OperationService<Specification<T>> {
 
     private final OperationProvider<Specification<T>> operationProvider;
+    private final Map<String, ManualOperationProvider<Specification<T>>> manualOperationProviderMap;
+
+    public SpecificationOperationService(OperationProvider<Specification<T>> operationProvider,
+                                         List<ManualOperationProvider<Specification<T>>> manualOperationProviders) {
+        this.operationProvider = operationProvider;
+        this.manualOperationProviderMap = CollectionUtils.isEmpty(manualOperationProviders)
+                ? null
+                : manualOperationProviders.stream().collect(Collectors.toMap(ManualOperationProvider::fieldName, Function.identity()));
+    }
 
     /**
      * Create specification for base search request
@@ -44,7 +54,7 @@ public class SpecificationOperationService<T> implements OperationService<Specif
 
         return baseSearchParams
                 .stream()
-                .map(param -> buildOperation(param, operationProvider))
+                .map(this::constructSpecification)
                 .reduce(glue::glueSpecOperation)
                 .orElse(SpecificationUtils.findAll());
     }
@@ -88,5 +98,12 @@ public class SpecificationOperationService<T> implements OperationService<Specif
                 pageAttribute.getLimit(),
                 SortUtils.makeSortOrders(searchSortFields, pageAttribute.getSortBy())
         );
+    }
+
+    private Specification<T> constructSpecification(BaseSearchParam param) {
+        if (!CollectionUtils.isEmpty(manualOperationProviderMap) && manualOperationProviderMap.containsKey(param.getName())) {
+            return manualOperationProviderMap.get(param.getName()).buildOperation(param);
+        }
+        return buildOperation(param, operationProvider);
     }
 }
