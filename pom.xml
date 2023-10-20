@@ -13,7 +13,7 @@
 
     <groupId>ru.sergkorot.dynamic</groupId>
     <artifactId>spring-boot-operation-starter</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 
     <name>Dynamic search</name>
     <description>Library for dynamic searching into the databases</description>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>ru.sergkorot.dynamic</groupId>
             <artifactId>operation-core</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.5</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
