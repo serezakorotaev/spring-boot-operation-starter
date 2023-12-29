@@ -6,8 +6,9 @@ import org.springframework.util.CollectionUtils;
 import ru.sergkorot.dynamic.model.BaseSearchParam;
 import ru.sergkorot.dynamic.model.ComplexSearchParam;
 import ru.sergkorot.dynamic.model.PageAttribute;
+import ru.sergkorot.dynamic.paging.PageRequestWithOffset;
 import ru.sergkorot.dynamic.model.enums.GlueOperation;
-import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
+import ru.sergkorot.dynamic.glue.GlueOperationProvider;
 import ru.sergkorot.dynamic.util.SortUtils;
 import ru.sergkorot.dynamic.util.SpecificationUtils;
 
@@ -28,11 +29,14 @@ import java.util.stream.Collectors;
 public class SpecificationOperationService<T> implements OperationService<Specification<T>> {
 
     private final OperationProvider<Specification<T>> operationProvider;
+    private final GlueOperationProvider<Specification<T>> glueOperationProvider;
     private final Map<String, ManualOperationProvider<Specification<T>>> manualOperationProviderMap;
 
     public SpecificationOperationService(OperationProvider<Specification<T>> operationProvider,
+                                         GlueOperationProvider<Specification<T>> glueOperationProvider,
                                          List<ManualOperationProvider<Specification<T>>> manualOperationProviders) {
         this.operationProvider = operationProvider;
+        this.glueOperationProvider = glueOperationProvider;
         this.manualOperationProviderMap = CollectionUtils.isEmpty(manualOperationProviders)
                 ? null
                 : manualOperationProviders.stream().collect(Collectors.toMap(ManualOperationProvider::fieldName, Function.identity()));
@@ -52,11 +56,12 @@ public class SpecificationOperationService<T> implements OperationService<Specif
             return SpecificationUtils.findAll();
         }
 
-        return baseSearchParams
+        List<Specification<T>> specifications = baseSearchParams
                 .stream()
                 .map(this::constructSpecification)
-                .reduce(glue::glueSpecOperation)
-                .orElse(SpecificationUtils.findAll());
+                .toList();
+
+        return buildGlue(glueOperationProvider, specifications, glue);
     }
 
     /**
@@ -69,15 +74,17 @@ public class SpecificationOperationService<T> implements OperationService<Specif
      * @see GlueOperation
      */
     public Specification<T> buildComplexByParams(List<ComplexSearchParam> complexSearchParams, GlueOperation externalGlue) {
-        return complexSearchParams.stream()
+
+        List<Specification<T>> specifications = complexSearchParams.stream()
                 .map(complexSearchParam ->
                         buildBaseByParams(
                                 complexSearchParam.getBaseSearchParams(),
                                 complexSearchParam.getInternalGlue()
                         )
                 )
-                .reduce(externalGlue::glueSpecOperation)
-                .orElse(SpecificationUtils.findAll());
+                .toList();
+
+        return buildGlue(glueOperationProvider, specifications, externalGlue);
     }
 
     /**
