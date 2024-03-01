@@ -87,6 +87,23 @@ public final class SpecificationUtils {
     }
 
     /**
+     * Find column less than specified value
+     *
+     * @param value      - the value to which the entry in the database should be less
+     * @param columnName - name of column into the database
+     * @param <T>        - the entity for which the request is being built
+     * @param <Y>        - comparable value
+     * @return Specification
+     */
+    @NonNull
+    public static <T, Y extends Comparable<Y>> Specification<T> lessThan(Expression<Y> value, @NonNull String columnName) {
+        if (value == null) {
+            return Specification.where(null);
+        }
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get(columnName), value);
+    }
+
+    /**
      * Find column greater than specified value
      *
      * @param value      - the value to which the entry in the database should be greater
@@ -97,6 +114,23 @@ public final class SpecificationUtils {
      */
     @NonNull
     public static <T, Y extends Comparable<Y>> Specification<T> greaterThan(Y value, @NonNull String columnName) {
+        if (value == null) {
+            return Specification.where(null);
+        }
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get(columnName), value);
+    }
+
+    /**
+     * Find column greater than specified value
+     *
+     * @param value      - the value to which the entry in the database should be greater
+     * @param columnName - name of column into the database
+     * @param <T>        - the entity for which the request is being built
+     * @param <Y>        - comparable value
+     * @return Specification
+     */
+    @NonNull
+    public static <T, Y extends Comparable<Y>> Specification<T> greaterThan(Expression<Y> value, @NonNull String columnName) {
         if (value == null) {
             return Specification.where(null);
         }
@@ -121,6 +155,23 @@ public final class SpecificationUtils {
     }
 
     /**
+     * Find column less than or equals specified value
+     *
+     * @param value      - the value to which the entry in the database should be less or equals
+     * @param columnName - name of column into the database
+     * @param <T>        - the entity for which the request is being built
+     * @param <Y>        - comparable value
+     * @return Specification
+     */
+    @NonNull
+    public static <T, Y extends Comparable<Y>> Specification<T> lessThanOrEqual(Expression<Y> value, @NonNull String columnName) {
+        if (value == null) {
+            return Specification.where(null);
+        }
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get(columnName), value);
+    }
+
+    /**
      * Find column greater than or equals specified value
      *
      * @param value      - the value to which the entry in the database should be greater or equals
@@ -131,6 +182,23 @@ public final class SpecificationUtils {
      */
     @NonNull
     public static <T, Y extends Comparable<Y>> Specification<T> greaterThanOrEqual(Y value, @NonNull String columnName) {
+        if (value == null) {
+            return Specification.where(null);
+        }
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get(columnName), value);
+    }
+
+    /**
+     * Find column greater than or equals specified value
+     *
+     * @param value      - the value to which the entry in the database should be greater or equals
+     * @param columnName - name of column into the database
+     * @param <T>        - the entity for which the request is being built
+     * @param <Y>        - comparable value
+     * @return Specification
+     */
+    @NonNull
+    public static <T, Y extends Comparable<Y>> Specification<T> greaterThanOrEqual(Expression<Y> value, @NonNull String columnName) {
         if (value == null) {
             return Specification.where(null);
         }

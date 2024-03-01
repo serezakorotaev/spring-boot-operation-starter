@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import ru.sergkorot.dynamic.enums.NestedOperation;
 import ru.sergkorot.dynamic.glue.GlueOperationProvider;
 import ru.sergkorot.dynamic.model.BaseSearchParam;
 import ru.sergkorot.dynamic.model.ComplexSearchParam;
@@ -119,6 +120,7 @@ public class SpecificationOperationService<T> implements OperationService<Specif
             return manualOperationProviderMap.get(param.getName()).buildOperation(param);
         }
 
+        //nested query
         if (param.getOperation().contains("nst")) {
             param.setOperation(param.getOperation().replace("nst:", ""));
             return buildNestedOperation(param);
@@ -139,13 +141,15 @@ public class SpecificationOperationService<T> implements OperationService<Specif
 
             Predicate predicate = buildBaseByParams(nestedParam.getBaseSearchParams(), nestedParam.getInternalGlue())
                     .toPredicate(subroot, query, criteriaBuilder);
+
             subquery.where(predicate);
 
-            if ("in".equals(param.getOperation())) {
-                return criteriaBuilder.in(root.get(param.getName())).value(subquery);
-            }
-            //написать логику для различных операций, сверху накидка, шаблон
-            return null;
+            return NestedOperation.of(param.getOperation())
+                    .buildQuery(subroot,
+                            param.getName(),
+                            subquery,
+                            criteriaBuilder)
+                    .toPredicate(root, query, criteriaBuilder);
         };
     }
 }
