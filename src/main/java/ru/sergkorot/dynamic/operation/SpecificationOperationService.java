@@ -145,7 +145,7 @@ public class SpecificationOperationService<T> implements OperationService<Specif
             subquery.where(predicate);
 
             return NestedOperation.of(param.getOperation())
-                    .buildQuery(subroot,
+                    .buildQuery(
                             param.getName(),
                             subquery,
                             criteriaBuilder)

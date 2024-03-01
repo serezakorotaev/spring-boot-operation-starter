@@ -1,7 +1,6 @@
 package ru.sergkorot.dynamic.enums;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +22,7 @@ public enum NestedOperation {
      */
     IN("in") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return (root, query, criteriaBuilder1) -> criteriaBuilder.in(root.get(fieldName)).value(subquery);
         }
     },
@@ -33,7 +32,7 @@ public enum NestedOperation {
      */
     NOT_IN("notIn") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return (root, query, criteriaBuilder1) -> criteriaBuilder.not(criteriaBuilder.in(root.get(fieldName)).value(subquery));
         }
     },
@@ -43,7 +42,7 @@ public enum NestedOperation {
      */
     EQUAL("eq") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return SpecificationUtils.findByColumnEquals(subquery, fieldName);
         }
     },
@@ -53,7 +52,7 @@ public enum NestedOperation {
      */
     NOT_EQUAL("notEq") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return SpecificationUtils.findByColumnNotEquals(subquery, fieldName);
         }
     },
@@ -63,7 +62,7 @@ public enum NestedOperation {
      */
     IS_NULL("isNull") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return SpecificationUtils.findByColumnIsNull(fieldName);
         }
     },
@@ -73,7 +72,7 @@ public enum NestedOperation {
      */
     LESS_THAN("lt") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return SpecificationUtils.lessThan(subquery.getSelection().as(String.class), fieldName);
         }
     },
@@ -83,7 +82,7 @@ public enum NestedOperation {
      */
     GREATER_THAN("gt") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return SpecificationUtils.greaterThan(subquery.getSelection().as(String.class), fieldName);
         }
     },
@@ -93,7 +92,7 @@ public enum NestedOperation {
      */
     LESS_THAN_OR_EQUALS("le") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return SpecificationUtils.lessThanOrEqual(subquery.getSelection().as(String.class), fieldName);
         }
     },
@@ -103,7 +102,7 @@ public enum NestedOperation {
      */
     GREATER_THAN_OR_EQUALS("ge") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return SpecificationUtils.greaterThanOrEqual(subquery.getSelection().as(String.class), fieldName);
         }
     },
@@ -113,7 +112,7 @@ public enum NestedOperation {
      */
     CONTAINS("contains") {
         @Override
-        public <T> Specification<T> buildQuery(Root<T> subRoot, String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
+        public <T> Specification<T> buildQuery(String fieldName, Subquery<Object> subquery, CriteriaBuilder criteriaBuilder) {
             return SpecificationUtils.contains(subquery.getSelection(), fieldName);
         }
     };
@@ -137,8 +136,7 @@ public enum NestedOperation {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("operation %s not supported", typeName)));
     }
 
-    public abstract <T> Specification<T> buildQuery(Root<T> subRoot,
-                                                    String fieldName,
+    public abstract <T> Specification<T> buildQuery(String fieldName,
                                                     Subquery<Object> subquery,
                                                     CriteriaBuilder criteriaBuilder);
 }
