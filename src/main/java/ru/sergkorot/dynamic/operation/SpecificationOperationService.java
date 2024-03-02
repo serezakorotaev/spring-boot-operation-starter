@@ -42,7 +42,8 @@ public class SpecificationOperationService<T> implements OperationService<Specif
 
     public SpecificationOperationService(OperationProvider<Specification<T>> operationProvider,
                                          GlueOperationProvider<Specification<T>> glueOperationProvider,
-                                         List<ManualOperationProvider<Specification<T>>> manualOperationProviders, ObjectMapper objectMapper) {
+                                         List<ManualOperationProvider<Specification<T>>> manualOperationProviders,
+                                         ObjectMapper objectMapper) {
         this.operationProvider = operationProvider;
         this.glueOperationProvider = glueOperationProvider;
         this.manualOperationProviderMap = CollectionUtils.isEmpty(manualOperationProviders)
