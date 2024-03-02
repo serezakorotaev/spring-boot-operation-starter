@@ -33,11 +33,12 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class SpecificationOperationService<T> implements OperationService<Specification<T>> {
 
+    private static final String NESTED = "nst:";
     private final OperationProvider<Specification<T>> operationProvider;
     private final GlueOperationProvider<Specification<T>> glueOperationProvider;
     private final Map<String, ManualOperationProvider<Specification<T>>> manualOperationProviderMap;
     private final ObjectMapper objectMapper;
-            ;
+
 
     public SpecificationOperationService(OperationProvider<Specification<T>> operationProvider,
                                          GlueOperationProvider<Specification<T>> glueOperationProvider,
@@ -120,9 +121,8 @@ public class SpecificationOperationService<T> implements OperationService<Specif
             return manualOperationProviderMap.get(param.getName()).buildOperation(param);
         }
 
-        //nested query
-        if (param.getOperation().contains("nst")) {
-            param.setOperation(param.getOperation().replace("nst:", ""));
+        if (param.getOperation().startsWith(NESTED)) {
+            param.setOperation(param.getOperation().replace(NESTED, ""));
             return buildNestedOperation(param);
         }
 
@@ -147,8 +147,8 @@ public class SpecificationOperationService<T> implements OperationService<Specif
             return NestedOperation.of(param.getOperation())
                     .<T>buildQuery(
                             param.getName(),
-                            subquery,
-                            criteriaBuilder)
+                            subquery
+                    )
                     .toPredicate(root, query, criteriaBuilder);
         };
     }
