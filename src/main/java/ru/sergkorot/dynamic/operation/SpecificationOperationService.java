@@ -1,14 +1,19 @@
 package ru.sergkorot.dynamic.operation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import ru.sergkorot.dynamic.enums.NestedOperation;
+import ru.sergkorot.dynamic.glue.GlueOperationProvider;
 import ru.sergkorot.dynamic.model.BaseSearchParam;
 import ru.sergkorot.dynamic.model.ComplexSearchParam;
 import ru.sergkorot.dynamic.model.PageAttribute;
-import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
 import ru.sergkorot.dynamic.model.enums.GlueOperation;
-import ru.sergkorot.dynamic.glue.GlueOperationProvider;
+import ru.sergkorot.dynamic.model.paging.PageRequestWithOffset;
 import ru.sergkorot.dynamic.util.SortUtils;
 import ru.sergkorot.dynamic.util.SpecificationUtils;
 
@@ -28,18 +33,23 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class SpecificationOperationService<T> implements OperationService<Specification<T>> {
 
+    private static final String NESTED = "nst:";
     private final OperationProvider<Specification<T>> operationProvider;
     private final GlueOperationProvider<Specification<T>> glueOperationProvider;
     private final Map<String, ManualOperationProvider<Specification<T>>> manualOperationProviderMap;
+    private final ObjectMapper objectMapper;
+
 
     public SpecificationOperationService(OperationProvider<Specification<T>> operationProvider,
                                          GlueOperationProvider<Specification<T>> glueOperationProvider,
-                                         List<ManualOperationProvider<Specification<T>>> manualOperationProviders) {
+                                         List<ManualOperationProvider<Specification<T>>> manualOperationProviders,
+                                         ObjectMapper objectMapper) {
         this.operationProvider = operationProvider;
         this.glueOperationProvider = glueOperationProvider;
         this.manualOperationProviderMap = CollectionUtils.isEmpty(manualOperationProviders)
                 ? null
                 : manualOperationProviders.stream().collect(Collectors.toMap(ManualOperationProvider::fieldName, Function.identity()));
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -111,6 +121,36 @@ public class SpecificationOperationService<T> implements OperationService<Specif
         if (!CollectionUtils.isEmpty(manualOperationProviderMap) && manualOperationProviderMap.containsKey(param.getName())) {
             return manualOperationProviderMap.get(param.getName()).buildOperation(param);
         }
+
+        if (param.getOperation().startsWith(NESTED)) {
+            param.setOperation(param.getOperation().replace(NESTED, ""));
+            return buildNestedOperation(param);
+        }
+
         return buildOperation(param, operationProvider);
+    }
+
+    private Specification<T> buildNestedOperation(BaseSearchParam param) {
+        return (root, query, criteriaBuilder) -> {
+
+            Subquery<Object> subquery = query.subquery(Object.class);
+            Root<T> subroot = subquery.from(root.getModel());
+
+            subquery.select(subroot.get(param.getName()));
+
+            ComplexSearchParam nestedParam = objectMapper.convertValue(param.getValue(), ComplexSearchParam.class);
+
+            Predicate predicate = buildBaseByParams(nestedParam.getBaseSearchParams(), nestedParam.getInternalGlue())
+                    .toPredicate(subroot, query, criteriaBuilder);
+
+            subquery.where(predicate);
+
+            return NestedOperation.of(param.getOperation())
+                    .<T>buildQuery(
+                            param.getName(),
+                            subquery
+                    )
+                    .toPredicate(root, query, criteriaBuilder);
+        };
     }
 }
